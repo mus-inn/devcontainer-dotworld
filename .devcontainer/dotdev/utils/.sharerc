@@ -1,0 +1,26 @@
+#Interactive shell
+chmod +x ${UTILS_DIR}/interactive_shell.sh
+
+
+# Aliases
+# some more ls aliases
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+alias mkdir="mkdir -pv"
+alias cl="clear"
+alias path="echo -e ${PATH//:/\\n}"
+alias now='date +"%T"'
+alias nowtime=now
+alias nowdate='date +"%d-%m-%Y"'
+alias llall="ls -al"
+alias dotdev="bash ${UTILS_DIR}/interactive_shell.sh"
+
+# Alias to call welcome script on clear
+alias reset='reset && ${UTILS_DIR}/welcome.sh'
+
+# Call welcome script on terminal start
+source ${UTILS_DIR}/welcome.sh
+
+# alias custom
+source ${DEVCONTAINER_DIR}/custom_alias.sh

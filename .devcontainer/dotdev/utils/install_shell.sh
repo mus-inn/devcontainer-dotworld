@@ -1,0 +1,66 @@
+#!/bin/bash
+
+# Répertoire contenant les configurations et les scripts
+export SCRIPT_DIR=$(dirname "$0")
+# Chemin complet
+full_path=$(dirname $(dirname "$SCRIPT_DIR"))
+# Obtenir le répertoire parent deux niveaux au-dessus
+export WORKSPACE_DIR=$(dirname "$full_path")
+export DEVCONTAINER_DIR="${WORKSPACE_DIR}/.devcontainer"
+export DOTDEV_DIR="${DEVCONTAINER_DIR}/dotdev"
+export COMMANDS_DIR="${DOTDEV_DIR}/commands"
+export CUSTOM_COMMANDS_DIR="${DEVCONTAINER_DIR}/custom_commands"
+export UTILS_DIR="${DOTDEV_DIR}/utils"
+export CONFIG_DIR="${UTILS_DIR}/stubs"
+export APP_NAME=$(basename `git rev-parse --show-toplevel`)
+
+# Utilisateur courant et root
+USERS=("vscode" "root")
+
+for USER in "${USERS[@]}"; do
+    HOME_DIR="/home/$USER"
+    if [ "$USER" == "root" ]; then
+        HOME_DIR="/root"
+    fi
+
+    # Copie des fichiers .bashrc et .zshrc
+    sudo cp "$CONFIG_DIR/.bashrc" "$HOME_DIR/.bashrc"
+    sudo cp "$CONFIG_DIR/.zshrc" "$HOME_DIR/.zshrc"
+
+    #fix permsission executable
+    sudo chmod +x "$UTILS_DIR/welcome.sh"
+
+    # Ajouter les variable et scripts .bashrc et .zshrc
+    echo "export WORKSPACE_DIR=\"$WORKSPACE_DIR\"" >> "$HOME_DIR/.bashrc"
+    echo "export WORKSPACE_DIR=\"$WORKSPACE_DIR\"" >> "$HOME_DIR/.zshrc"
+
+    echo "export DEVCONTAINER_DIR=\"$DEVCONTAINER_DIR\"" >> "$HOME_DIR/.bashrc"
+    echo "export DEVCONTAINER_DIR=\"$DEVCONTAINER_DIR\"" >> "$HOME_DIR/.zshrc"
+
+	echo "export DOTDEV_DIR=\"$DOTDEV_DIR\"" >> "$HOME_DIR/.bashrc"
+    echo "export DOTDEV_DIR=\"$DOTDEV_DIR\"" >> "$HOME_DIR/.zshrc"
+
+	echo "export COMMANDS_DIR=\"$COMMANDS_DIR\"" >> "$HOME_DIR/.bashrc"
+    echo "export COMMANDS_DIR=\"$COMMANDS_DIR\"" >> "$HOME_DIR/.zshrc"
+
+	echo "export CUSTOM_COMMANDS_DIR=\"$CUSTOM_COMMANDS_DIR\"" >> "$HOME_DIR/.bashrc"
+    echo "export CUSTOM_COMMANDS_DIR=\"$CUSTOM_COMMANDS_DIR\"" >> "$HOME_DIR/.zshrc"
+
+	echo "export APP_NAME=\"$APP_NAME\"" >> "$HOME_DIR/.bashrc"
+    echo "export APP_NAME=\"$APP_NAME\"" >> "$HOME_DIR/.zshrc"
+
+    echo "export UTILS_DIR=\"$UTILS_DIR\"" >> "$HOME_DIR/.bashrc"
+    echo "export UTILS_DIR=\"$UTILS_DIR\"" >> "$HOME_DIR/.zshrc"
+
+    echo "export CONFIG_DIR=\"$CONFIG_DIR\"" >> "$HOME_DIR/.bashrc"
+    echo "export CONFIG_DIR=\"$CONFIG_DIR\"" >> "$HOME_DIR/.zshrc"
+
+    echo "source ${UTILS_DIR}/.sharerc" >> "$HOME_DIR/.bashrc"
+    echo "source ${UTILS_DIR}/.sharerc" >> "$HOME_DIR/.zshrc"
+
+done
+
+cp $CONFIG_DIR/makefile $WORKSPACE_DIR/makefile
+
+echo "Configuration des shells installée avec succès."
+
