@@ -1,13 +1,9 @@
 services:
   devcontainer-dotworld:
-    image: alpine:latest
-    container_name: devcontainer-dotworld
-    volumes:
-      - '${APP_VOLUME}:/workspaces/${APP_NAME}'
-      - '/var/run/docker.sock:/var/run/docker.sock'
-    networks:
-      - infrastructure 
-networks: 
-  infrastructure:
-    driver: bridge
-
+    image: dotworld:alpine
+    container_name: "devcontainer-dotworld"
+    volumes: 
+      - '${APP_VOLUME:-/default/path}:/workspaces/${APP_NAME:-app}'
+    ports:
+      - "3000:3000"
+    command: sh -c "echo Container started && trap 'exit 0' 15 && while sleep 1 & wait $!; do :; done"
