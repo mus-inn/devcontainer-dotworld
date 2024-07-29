@@ -1,6 +1,6 @@
 services:
   devcontainer-dotworld:
-    image: chdotworld/dotworld:base-alpine
+    image: chdotworld/dotworld:base-with-docker-alpine
     container_name: devcontainer-dotworld
     volumes:
       - '${APP_VOLUME}:/workspaces/${APP_NAME}'
