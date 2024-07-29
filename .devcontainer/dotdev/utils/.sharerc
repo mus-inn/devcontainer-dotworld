@@ -23,4 +23,4 @@ alias reset='reset && ${UTILS_DIR}/welcome.sh'
 source ${UTILS_DIR}/welcome.sh
 
 # alias custom
-source ${DEVCONTAINER_DIR}/custom_alias.sh
+source ${CUSTOM_DIR}/alias.sh

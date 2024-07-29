@@ -1,7 +1,7 @@
 .DEFAULT_GOAL := help
 
 # define the container name : container=container_name
-container=$APP_NAME
+container=$(APP_NAME)
 
 zsh: ## SSH into the container
 	@docker exec -it $(container) su - vscode -c zsh

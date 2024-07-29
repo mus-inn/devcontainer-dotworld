@@ -9,9 +9,11 @@ export WORKSPACE_DIR=$(dirname "$full_path")
 export DEVCONTAINER_DIR="${WORKSPACE_DIR}/.devcontainer"
 export DOTDEV_DIR="${DEVCONTAINER_DIR}/dotdev"
 export COMMANDS_DIR="${DOTDEV_DIR}/commands"
-export CUSTOM_COMMANDS_DIR="${DEVCONTAINER_DIR}/custom_commands"
+export CUSTOM_DIR="${DEVCONTAINER_DIR}/customs"
+export CUSTOM_COMMANDS_DIR="${CUSTOM_DIR}/commands"
 export UTILS_DIR="${DOTDEV_DIR}/utils"
 export CONFIG_DIR="${UTILS_DIR}/stubs"
+
 export APP_NAME=$(basename `git rev-parse --show-toplevel`)
 
 # Utilisateur courant et root
@@ -43,6 +45,9 @@ for USER in "${USERS[@]}"; do
 	echo "export COMMANDS_DIR=\"$COMMANDS_DIR\"" >> "$HOME_DIR/.bashrc"
     echo "export COMMANDS_DIR=\"$COMMANDS_DIR\"" >> "$HOME_DIR/.zshrc"
 
+	echo "export CUSTOM_DIR=\"$CUSTOM_DIR\"" >> "$HOME_DIR/.bashrc"
+    echo "export CUSTOM_DIR=\"$CUSTOM_DIR\"" >> "$HOME_DIR/.zshrc"
+
 	echo "export CUSTOM_COMMANDS_DIR=\"$CUSTOM_COMMANDS_DIR\"" >> "$HOME_DIR/.bashrc"
     echo "export CUSTOM_COMMANDS_DIR=\"$CUSTOM_COMMANDS_DIR\"" >> "$HOME_DIR/.zshrc"
 
@@ -59,6 +64,8 @@ for USER in "${USERS[@]}"; do
     echo "source ${UTILS_DIR}/.sharerc" >> "$HOME_DIR/.zshrc"
 
 done
+
+source ${CUSTOM_DIR}/install.sh
 
 cp $CONFIG_DIR/makefile $WORKSPACE_DIR/makefile
 
