@@ -42,7 +42,7 @@ is_docker_logged_in() {
 run_command() {
     COMMAND=$1
     echo -e "${BLUE}Exécution de : ${COMMAND}${NC}"
-    bash -c "$COMMAND" 2>&1 | tee /dev/tty
+    bash -c "$COMMAND"
     EXIT_CODE=${PIPESTATUS[0]}
     if [ $EXIT_CODE -ne 0 ]; then
         echo -e "${RED}❌ Erreur lors de l'exécution de la commande :${NC}\n"

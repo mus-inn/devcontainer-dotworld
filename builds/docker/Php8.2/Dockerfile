@@ -5,7 +5,7 @@ FROM chdotworld/dotworld:base-alpine
 LABEL mainteneur="Gtko"
 
 # Arguments de build
-ARG NODE_VERSION=18
+ARG NODE_VERSION=20
 
 # Définir le répertoire de travail
 WORKDIR /var/www/html
@@ -48,33 +48,33 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositori
 
 # Installation de PHP 8.1 et extensions depuis les dépôts edge
     apk add --no-cache \
-    php81 \
-    php81-dev \
-    php81-common \
-    php81-gd \
-    php81-xmlreader \
-    php81-bcmath \
-    php81-ctype \
-    php81-curl \
-    php81-exif \
-    php81-iconv \
-    php81-intl \
-    php81-mbstring \
-    php81-opcache \
-    php81-openssl \
-    php81-pcntl \
-    php81-phar \
-    php81-session \
-    php81-xml \
-    php81-xsl \
-    php81-zip \
-    php81-zlib \
-    php81-dom \
-    php81-fpm \
-    php81-sodium \
-    php81-tokenizer \
-    php81-pecl-apcu && \
-    ln -sf /usr/bin/php81 /usr/bin/php && \
+    php82 \
+    php82-dev \
+    php82-common \
+    php82-gd \
+    php82-xmlreader \
+    php82-bcmath \
+    php82-ctype \
+    php82-curl \
+    php82-exif \
+    php82-iconv \
+    php82-intl \
+    php82-mbstring \
+    php82-opcache \
+    php82-openssl \
+    php82-pcntl \
+    php82-phar \
+    php82-session \
+    php82-xml \
+    php82-xsl \
+    php82-zip \
+    php82-zlib \
+    php82-dom \
+    php82-fpm \
+    php82-sodium \
+    php82-tokenizer \
+    php82-pecl-apcu && \
+    ln -sf /usr/bin/php82 /usr/bin/php && \
 
 # Configuration du fuseau horaire
     cp /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && \
@@ -97,7 +97,7 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositori
 
 # Copie de fichiers de configuration
 COPY start-container /usr/local/bin/start-container
-COPY php.ini /etc/php81/conf.d/99-vscode.ini
+COPY php.ini /etc/php82/conf.d/99-vscode.ini
 
 # Configuration des permissions
 RUN chmod +x /usr/local/bin/start-container

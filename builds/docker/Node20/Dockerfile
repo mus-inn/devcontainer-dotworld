@@ -5,7 +5,7 @@ FROM chdotworld/dotworld:base-alpine
 LABEL mainteneur="Gtko"
 
 # Arguments de build
-ARG NODE_VERSION=18
+ARG NODE_VERSION=20
 
 # Définir le répertoire de travail
 WORKDIR /var/www/html
@@ -33,48 +33,16 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositori
     make \
     cmake \
     pkgconf \
-    sqlite-dev \
     libxml2-dev \
     curl-dev \
     openssl-dev \
     zlib-dev \
     wget \
     tzdata \
-    mysql-client \
     docker-cli \
     coreutils \
     oniguruma-dev \
     tini && \
-
-# Installation de PHP 8.1 et extensions depuis les dépôts edge
-    apk add --no-cache \
-    php81 \
-    php81-dev \
-    php81-common \
-    php81-gd \
-    php81-xmlreader \
-    php81-bcmath \
-    php81-ctype \
-    php81-curl \
-    php81-exif \
-    php81-iconv \
-    php81-intl \
-    php81-mbstring \
-    php81-opcache \
-    php81-openssl \
-    php81-pcntl \
-    php81-phar \
-    php81-session \
-    php81-xml \
-    php81-xsl \
-    php81-zip \
-    php81-zlib \
-    php81-dom \
-    php81-fpm \
-    php81-sodium \
-    php81-tokenizer \
-    php81-pecl-apcu && \
-    ln -sf /usr/bin/php81 /usr/bin/php && \
 
 # Configuration du fuseau horaire
     cp /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && \
@@ -90,14 +58,10 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositori
     ln -s $NVM_DIR/versions/node/v$NODE_VERSION/bin/npm /usr/local/bin/npm && \
 
 # Nettoyer les caches de paquets pour économiser de l'espace
-    rm -rf /var/cache/apk/* && \
-
-# Installation de Composer
-    curl -sLS https://getcomposer.org/installer | php -- --install-dir=/usr/bin/ --filename=composer
+    rm -rf /var/cache/apk/*
 
 # Copie de fichiers de configuration
 COPY start-container /usr/local/bin/start-container
-COPY php.ini /etc/php81/conf.d/99-vscode.ini
 
 # Configuration des permissions
 RUN chmod +x /usr/local/bin/start-container

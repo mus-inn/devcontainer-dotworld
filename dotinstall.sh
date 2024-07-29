@@ -159,13 +159,22 @@ function show_main_menu() {
     esac
 }
 
-function show_stacks()
-{
-        for dir in $PATH_TO_TEMP_DIR/stubs/stacks/*; do
+function show_stacks() {
+    local index=0
+    local template_options=()
+
+    for dir in $PATH_TO_TEMP_DIR/stubs/stacks/*; do
         if [ -d "$dir" ]; then
             local template_name=$(basename "$dir")
+            local description="Aucune description disponible"
+
+            # Vérifier si le fichier README existe et lire tout le contenu
+            if [ -f "$dir/describ" ]; then
+                description=$(tr '\n' ' ' < "$dir/describ" | sed 's/  */ /g')  # Remplace les nouvelles lignes par des espaces
+            fi
+
             local NUMERO=$((index + 1))
-            echo -e "$NUMERO ) $template_name"
+            echo -e "$NUMERO ) $template_name - $description"
             template_options+=("$template_name")
             index=$((index + 1))
         fi
