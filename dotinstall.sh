@@ -103,6 +103,7 @@ function create_devcontainer() {
 
 # Fonction pour construire une image Docker
 function build_docker_image() {
+    cd $PATH_TO_TEMP_DIR 
     if [ ! -f "$PATH_TO_TEMP_DIR/build.sh" ]; then
         echo -e "${ERROR} build.sh script not found in the current directory."
         exit 1
