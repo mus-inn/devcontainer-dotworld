@@ -25,6 +25,3 @@ RUN useradd -m -s /bin/bash vscode && \
 
 # Set working directory
 WORKDIR /var/www/html
-
-# Switch to 'vscode' user
-USER vscode
