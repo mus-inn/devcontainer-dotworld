@@ -26,7 +26,7 @@ print_step() {
     echo -e "${YELLOW}Dotworld Build Docker${NC}"
     echo -e "${MAGENTA}🕒 Heure actuelle : ${CURRENT_TIME}${NC}"
     echo -e "${BLUE}🔄 Progression : ${PROGRESS}%  (${STEP_NUM}/${TOTAL_STEPS})${NC}${NC}"
-    echo -e "${GREEN} Work Directory: $(pwd)${NC}"
+    echo -e "${GREEN}📁 Work Directory: $(pwd)${NC}"
     echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
     echo -e "\n\n"
 }
