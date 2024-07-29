@@ -1,6 +1,6 @@
 services:
   ##APP_NAME##:
-    image: alpine:latest
+    image: chdotworld/dotworld:base-alpine
     container_name: ##APP_NAME##
     volumes:
       - '${APP_VOLUME}:/workspaces/${APP_NAME}'
