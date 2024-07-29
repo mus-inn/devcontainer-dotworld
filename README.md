@@ -1,4 +1,4 @@
-# Dotnstall 🚀
+# DotInstall 🚀
 
 Bienvenue sur Dotinstall,  
 L'outil par excellence chez Dotworld pour gérer et installer nos environnements de développement.
