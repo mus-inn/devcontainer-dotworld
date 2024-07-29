@@ -70,8 +70,8 @@ echo -e ""
 
 
 # Inclure le contenu personnalisé à partir d'un fichier externe
-if [ -f "$DEVCONTAINER_DIR/custom_welcome.sh" ]; then
-    source "$DEVCONTAINER_DIR/custom_welcome.sh"
+if [ -f "$CUSTOM_DIR/welcome.sh" ]; then
+    source "$CUSTOM_DIR/welcome.sh"
 fi
 
 # Fin du message

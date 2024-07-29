@@ -55,17 +55,19 @@ run_command() {
 # Fonction pour obtenir les informations de l'image Docker sans jq
 get_image_info() {
     IMAGE=$1
-    INFO=$(docker inspect $IMAGE)
-    IMAGE_NAME=$(echo "$INFO" | grep -m 1 "\"RepoTags\"" | awk -F '[\\[\\]" ]+' '{print $5}')
-    IMAGE_SIZE=$(echo "$INFO" | grep -m 1 "\"Size\"" | awk -F '[:, ]+' '{print $3}')
+    INFO=$(docker inspect --format='{{json .}}' $IMAGE)
+
+    # Extraire le nom de l'image (le tag complet)
+    IMAGE_NAME=$(echo "$INFO" | sed -n 's/.*"RepoTags":\["\([^"]*\)".*/\1/p')
+
+    # Extraire la taille de l'image
+    IMAGE_SIZE=$(echo "$INFO" | sed -n 's/.*"Size":\([0-9]*\).*/\1/p')
     IMAGE_SIZE_MB=$(echo "scale=2; $IMAGE_SIZE / (1024*1024)" | bc)
-    BASE_IMAGE=$(echo "$INFO" | grep -m 1 "\"Parent\"" | awk -F '[\\[\\]" ]+' '{print $5}')
 
     echo -e "${YELLOW}📋 Récapitulatif de l'image Docker${NC}"
     echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-    echo -e "${GREEN}📛 Nom de l'image     : ${NC}${MAGENTA}$IMAGE_NAME${NC}"
-    echo -e "${GREEN}📏 Taille de l'image  : ${NC}${MAGENTA}$IMAGE_SIZE_MB MB${NC}"
-    echo -e "${GREEN}🛠️  Image de base      : ${NC}${MAGENTA}$BASE_IMAGE${NC}"
+    echo -e "${GREEN}📛 Nom de l'image     : ${NC}${MAGENTA}${IMAGE_NAME:-Non défini}${NC}"
+    echo -e "${GREEN}📏 Taille de l'image  : ${NC}${MAGENTA}${IMAGE_SIZE_MB:-Non défini} MB${NC}"
     echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}\n"
 }
 
