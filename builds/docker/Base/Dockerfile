@@ -2,7 +2,7 @@ FROM alpine:latest
 
 LABEL maintainer="Dotworld"
 
-# Install necessary dependencies
+# Install necessary dependencies and create user
 RUN apk update && apk upgrade && \
     apk add --no-cache \
     bash \
@@ -13,15 +13,20 @@ RUN apk update && apk upgrade && \
     sudo \
     shadow \
     figlet \
-    gum 
+    gum \
+    # Create a new user 'vscode' with sudo privileges
+    && useradd -m -s /bin/bash vscode \
+    && echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers \
+    && usermod -aG wheel vscode \
+    # Cleanup cache to reduce image size
+    && rm -rf /var/cache/apk/*
 
-# Install Oh My Zsh
+# Install Oh My Zsh as vscode user
+USER vscode
 RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-
-# Create a new user 'vscode' with sudo privileges
-RUN useradd -m -s /bin/bash vscode && \
-    usermod -aG wheel vscode && \
-    echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 # Set working directory
 WORKDIR /var/www/html
+
+# Switch back to root if necessary for further instructions
+USER root

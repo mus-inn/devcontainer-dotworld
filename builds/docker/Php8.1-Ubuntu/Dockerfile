@@ -2,7 +2,7 @@ FROM mcr.microsoft.com/devcontainers/base:ubuntu
 
 LABEL maintainer="Taylor Otwell"
 
-ARG WWWGROUP
+ARG WWWGROUP=1000
 ARG NODE_VERSION=18
 ARG POSTGRES_VERSION=15
 
@@ -61,7 +61,6 @@ RUN  curl -sLS https://getcomposer.org/installer | php -- --install-dir=/usr/bin
 
 RUN setcap "cap_net_bind_service=+ep" /usr/bin/php8.1
 
-RUN groupadd --force -g $WWWGROUP vscode
 RUN useradd -ms /bin/zsh --no-user-group -g $WWWGROUP -u 1337 vscode
 RUN usermod -aG docker vscode
 

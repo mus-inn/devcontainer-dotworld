@@ -26,7 +26,7 @@ print_step() {
     echo -e "${YELLOW}Dotworld Build Docker${NC}"
     echo -e "${MAGENTA}🕒 Heure actuelle : ${CURRENT_TIME}${NC}"
     echo -e "${BLUE}🔄 Progression : ${PROGRESS}%  (${STEP_NUM}/${TOTAL_STEPS})${NC}${NC}"
-    echo -e "${GREEN} Work Directory: $(pwd)${NC}"
+    echo -e "${GREEN}📁 Work Directory: $(pwd)${NC}"
     echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
     echo -e "\n\n"
 }
@@ -42,7 +42,7 @@ is_docker_logged_in() {
 run_command() {
     COMMAND=$1
     echo -e "${BLUE}Exécution de : ${COMMAND}${NC}"
-    bash -c "$COMMAND" 2>&1 | tee /dev/tty
+    bash -c "$COMMAND"
     EXIT_CODE=${PIPESTATUS[0]}
     if [ $EXIT_CODE -ne 0 ]; then
         echo -e "${RED}❌ Erreur lors de l'exécution de la commande :${NC}\n"
