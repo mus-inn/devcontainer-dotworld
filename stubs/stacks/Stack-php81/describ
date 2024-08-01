@@ -1,1 +1,1 @@
-Version de php en 8.1 sur une version alpine docker (NPM, PHP, MYSQL)
+Version de php en 8.1 sur une version ubuntu docker (NPM, PHP, MYSQL)

@@ -15,6 +15,15 @@
 # Ajoutez vos alias ci-dessous
 
 
-alias phpunit="vendor/bin/phpunit"
-alias pest="vendor/bin/pest"
-alias pa="php artisan"
+alias dev="npm run dev"
+alias build="npm run build"
+alias start="npm run start"
+alias preview="npm run preview"
+alias lint="npm run lint"
+alias storybook="npm run storybook"
+alias build-storybook="npm run build-storybook"
+alias p-check="npm run prettier:check"
+alias p-fix="npm run prettier:fix"
+alias t-check="npm run type-check"
+alias clean="npm run clean"
+alias test="npm run test"

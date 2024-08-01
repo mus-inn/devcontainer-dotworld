@@ -1,6 +1,6 @@
 services:
   ##APP_NAME##:
-    image: chdotworld/dotworld:php81-alpine
+    image: chdotworld/dotworld:php81-ubuntu
     container_name: ##APP_NAME##
     ports:
       - '${APP_PORT:-80}:80'

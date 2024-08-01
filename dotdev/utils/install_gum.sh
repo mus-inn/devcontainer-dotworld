@@ -1,10 +1,11 @@
 #!/bin/bash
 
-#clean gum if already installed
+# gum if already installed
 if command -v gum &> /dev/null
 then
-    sudo rm /usr/local/bin/gum
-fi
+    echo "gum est déjà installé"
+    echo "gum version: $(gum --version)"
+else    
 
 # Définir la version de gum à installer
 GUM_VERSION="0.14.3"
@@ -36,4 +37,6 @@ then
 else
     echo "Échec de l'installation de gum"
     exit 1
+fi
+
 fi

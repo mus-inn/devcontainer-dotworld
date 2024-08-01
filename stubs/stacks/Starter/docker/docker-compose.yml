@@ -1,6 +1,6 @@
 services:
   ##APP_NAME##:
-    image: chdotworld/dotworld:base-with-docker-alpine
+    image: chdotworld/dotworld:base-ubuntu
     container_name: ##APP_NAME##
     volumes:
       - '${APP_VOLUME}:/workspaces/${APP_NAME}'
