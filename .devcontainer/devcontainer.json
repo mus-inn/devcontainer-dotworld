@@ -16,8 +16,6 @@
 	},
 	// Use 'postCreateCommand' to run commands after the container is created.[
 	"postCreateCommand": "sudo bash /workspaces/devcontainer-dotworld/.devcontainer/dotdev/utils/install_shell.sh",
-	"postAttachCommand": "",
-	//"postAttachCommand" : "cp .env.docker .env && composer install && php artisan migrate --seed && php artisan migrate --env=testing && php artisan shield:super-admin --user=1 && npm install && npm run dev",
 	"customizations": {
 		"vscode": {
 			"extensions": [
@@ -30,6 +28,5 @@
 				"GitHub.vscode-github-actions"
 			]
 		}
-	},
-	"remoteUser": "vscode"
+	}
 }

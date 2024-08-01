@@ -65,10 +65,44 @@ function download_file() {
 # Fonction pour mettre à jour Dotdev
 function update_dotdev() {
     echo -e "${INFO} Updating Dotdev..."
-    # Assurer que les fichiers sont déjà téléchargés et mis à jour dans le répertoire .devcontainer/dotdev
-    rm -r ./.devcontainer/dotdev
-    cp -R $PATH_TO_TEMP_DIR/dotdev ./.devcontainer || { echo -e "${ERROR} Failed to copy dotdev files."; exit 1; }
+    # Supprimez et remplacez complètement le répertoire dotdev
+    rm -rf ./.devcontainer/dotdev
+    cp -R "$PATH_TO_TEMP_DIR/dotdev" ./.devcontainer || { echo -e "${ERROR} Failed to copy dotdev files."; exit 1; }
     echo -e "${SUCCESS} Dotdev files have been updated successfully!"
+}
+
+# Fonction pour mettre à jour le devcontainer
+function update_devcontainer_interactive() {
+    echo -e "${INFO} Updating .devcontainer interactively..."
+
+    local source_dir="$PATH_TO_TEMP_DIR"
+    local dest_dir="./.devcontainer"
+
+    # Supprimer et remplacer le répertoire dotdev en premier
+    rm -rf "$dest_dir/dotdev"
+    cp -R "$source_dir/dotdev" "$dest_dir/" || { echo -e "${ERROR} Failed to update dotdev files."; exit 1; }
+
+    # Parcourir chaque fichier et dossier dans le répertoire source
+    for file in $(find "$source_dir" -type f ! -path "$source_dir/dotdev/*"); do
+        local relative_path="${file#$source_dir/}"
+        local dest_file="$dest_dir/$relative_path"
+
+        if [ -f "$dest_file" ]; then
+            echo -e "${INFO} File $relative_path already exists."
+            local choice=$(prompt "${INFO} Do you want to overwrite this file? (y/n): ")
+            if [[ "$choice" == "y" || "$choice" == "Y" ]]; then
+                cp "$file" "$dest_file" || { echo -e "${ERROR} Failed to overwrite file $relative_path."; exit 1; }
+                echo -e "${SUCCESS} Overwritten $relative_path successfully."
+            else
+                echo -e "${INFO} Keeping existing file $relative_path."
+            fi
+        else
+            cp "$file" "$dest_file" || { echo -e "${ERROR} Failed to copy new file $relative_path."; exit 1; }
+            echo -e "${SUCCESS} Added new file $relative_path successfully."
+        fi
+    done
+
+    echo -e "${SUCCESS} .devcontainer has been updated successfully!"
 }
 
 # Fonction pour créer un nouvel environnement devcontainer
@@ -79,38 +113,37 @@ function create_devcontainer() {
     local DEST_DIR="./.devcontainer"
     local DOTDEV_DIR="$PATH_TO_TEMP_DIR/dotdev"
 
-
     if [ ! -d "$STUBS_DIR" ]; then
         echo -e "${ERROR} Template $TEMPLATE_CHOICE does not exist."
         exit 1
     fi
 
-    rm -r $DEST_DIR
+    rm -r "$DEST_DIR"
 
     echo -e "${INFO} Creating new devcontainer environment from $TEMPLATE_CHOICE template..."
-    mkdir -p $DEST_DIR
-    cp -r $STUBS_DIR/. $DEST_DIR || { echo -e "${ERROR} Failed to copy template files."; exit 1; }
+    mkdir -p "$DEST_DIR"
+    cp -r "$STUBS_DIR/." "$DEST_DIR" || { echo -e "${ERROR} Failed to copy template files."; exit 1; }
 
     echo -e "${INFO} Replacing variable ##APP_NAME## with $APP_NAME..."
-    find $DEST_DIR -type f -exec sed -i.bak "s/##APP_NAME##/$APP_NAME/g" {} \; || { echo -e "${ERROR} Failed to replace variable."; exit 1; }
+    find "$DEST_DIR" -type f -exec sed -i.bak "s/##APP_NAME##/$APP_NAME/g" {} \; || { echo -e "${ERROR} Failed to replace variable."; exit 1; }
 
-    find $DEST_DIR -type f -name "*.bak" -exec rm {} \;
+    find "$DEST_DIR" -type f -name "*.bak" -exec rm {} \;
 
-    cp -r $DOTDEV_DIR/. $DEST_DIR/dotdev || { echo -e "${ERROR} Failed to copy template files."; exit 1; }
+    cp -r "$DOTDEV_DIR/." "$DEST_DIR/dotdev" || { echo -e "${ERROR} Failed to copy dotdev files."; exit 1; }
 
     echo -e "${SUCCESS} New devcontainer environment has been created successfully!"
 }
 
 # Fonction pour construire une image Docker
 function build_docker_image() {
-    cd $PATH_TO_TEMP_DIR 
+    cd "$PATH_TO_TEMP_DIR" 
     if [ ! -f "$PATH_TO_TEMP_DIR/build.sh" ]; then
         echo -e "${ERROR} build.sh script not found in the current directory."
         exit 1
     fi
 
     echo -e "${INFO} Executing build.sh to build Docker image..."
-    bash $PATH_TO_TEMP_DIR/build.sh || { echo -e "${ERROR} Docker build script failed."; exit 1; }
+    bash "$PATH_TO_TEMP_DIR/build.sh" || { echo -e "${ERROR} Docker build script failed."; exit 1; }
     echo -e "${SUCCESS} Docker image built successfully!"
 }
 
@@ -131,17 +164,21 @@ function prompt() {
 function show_main_menu() {
     echo -e "${INFO} Please select an option:"
     echo -e "1) Update Dotdev"
-    echo -e "2) Install a devcontainer environment"
-    echo -e "3) Build Docker Image"
+    echo -e "2) Update .devcontainer interactively"
+    echo -e "3) Install a devcontainer environment"
+    echo -e "4) Build Docker Image"
     echo -e ""
 
-    local CHOICE=$(prompt "${INFO} Enter your choice [1-3]: ")
+    local CHOICE=$(prompt "${INFO} Enter your choice [1-4]: ")
 
     case $CHOICE in
         1)
             update_dotdev
             ;;
         2)
+            update_devcontainer_interactive
+            ;;
+        3)
             echo -e "${INFO} Calling choose_template..."
             show_stacks
             TEMPLATE=$(choose_template)
@@ -149,7 +186,7 @@ function show_main_menu() {
             local APP_NAME=$(prompt "${INFO} Enter the APP_NAME: ")
             create_devcontainer $TEMPLATE $APP_NAME
             ;;
-        3)
+        4)
             build_docker_image
             ;;
         *)
@@ -163,7 +200,7 @@ function show_stacks() {
     local index=0
     local template_options=()
 
-    for dir in $PATH_TO_TEMP_DIR/stubs/stacks/*; do
+    for dir in "$PATH_TO_TEMP_DIR/stubs/stacks/"*; do
         if [ -d "$dir" ]; then
             local template_name=$(basename "$dir")
             local description="Aucune description disponible"
@@ -186,7 +223,7 @@ function choose_template() {
     local index=1
     local template_options=()
     
-    for dir in $PATH_TO_TEMP_DIR/stubs/stacks/*; do
+    for dir in "$PATH_TO_TEMP_DIR/stubs/stacks/"*; do
         if [ -d "$dir" ]; then
             local template_name=$(basename "$dir")
             template_options+=("$template_name")
@@ -202,7 +239,7 @@ function choose_template() {
 
     local TEMPLATE_CHOICE=$(prompt "${INFO} Enter your template choice [1-${#template_options[@]}]: ")
 
-    if [[ ! "$TEMPLATE_CHOICE" =~ ^[1-9][0-9]*$ ]] || [ "$TEMPLATE_CHOICE" -lt 1 ] || [ "$TEMPLATE_CHOICE" -gt "${#template_options[@]}" ]; then
+    if [[ ! "$TEMPLATE_CHOICE" =~ ^[1-9][0-9]*$ ]] || [ "$TEMPLATE_CHOICE" -lt 1 ] || [ "$TEMPLATE_CHOICE" -gt "${#template_options[@]}" ]]; then
         echo -e "${ERROR} Invalid choice. Exiting."
         exit 1
     fi
@@ -211,16 +248,14 @@ function choose_template() {
     echo $TEMPLATE
 }
 
-
-
 clear
 #download latest version
 LATEST_VERSION=$(get_latest_version)
-DOWNLOAD_URL=$(get_download_url $LATEST_VERSION)
+DOWNLOAD_URL=$(get_download_url "$LATEST_VERSION")
 TEMP_DIR_NAME="$REPO_NAME-$LATEST_VERSION"
 PATH_TO_TEMP_DIR="$TEMP_DIR/$TEMP_DIR_NAME"
-download_file $DOWNLOAD_URL $TEMP_DIR/$REPO_NAME.tar.gz
-tar -xzf $TEMP_DIR/$REPO_NAME.tar.gz -C $TEMP_DIR
+download_file "$DOWNLOAD_URL" "$TEMP_DIR/$REPO_NAME.tar.gz"
+tar -xzf "$TEMP_DIR/$REPO_NAME.tar.gz" -C "$TEMP_DIR"
 echo -e "${SUCCESS} Downloaded and extracted the latest version $LATEST_VERSION."
 
 sleep 1
@@ -228,15 +263,14 @@ clear
 
 echo -e "Welcome"
 echo -e "______      _  _____          _        _ _ "
-echo -e "|  _  \    | ||_   _|        | |      | | |"
+echo -e "|  _  \\    | ||_   _|        | |      | | |"
 echo -e "| | | |___ | |_ | | _ __  ___| |_ __ _| | |"
-echo -e "| | | / _ \| __|| ||  _ \/ __| __/ _  | | |"
-echo -e "| |/ / (_) | |__| || | | \__ \ || (_| | | |"
-echo -e "|___/ \___/ \__\___/_| |_|___/\__\__,_|_|_|"                                           
+echo -e "| | | / _ \\| __|| ||  _ \\/ __| __/ _  | | |"
+echo -e "| |/ / (_) | |__| || | | \\__ \\ || (_| | | |"
+echo -e "|___/ \\___/ \\__\\___/_| |_|___/\\__\\__,_|_|_|"                                           
 echo -e ""
 echo -e "by Dotworld"
 echo -e ""
-
 
 # Exécution principale
 show_main_menu
