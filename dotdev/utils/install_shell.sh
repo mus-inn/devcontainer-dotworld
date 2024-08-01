@@ -65,6 +65,7 @@ for USER in "${USERS[@]}"; do
 
 done
 
+source ${UTILS_DIR}/install_gum.sh
 source ${CUSTOM_DIR}/install.sh
 
 cp $CONFIG_DIR/makefile $WORKSPACE_DIR/makefile

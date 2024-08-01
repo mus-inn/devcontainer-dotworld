@@ -1,6 +1,6 @@
 services:
   devcontainer-dotworld:
-    image: chdotworld/dotworld:base-with-docker-alpine
+    image: chdotworld/dotworld:php81-ubuntu-alpine
     container_name: devcontainer-dotworld
     volumes:
       - '${APP_VOLUME}:/workspaces/${APP_NAME}'

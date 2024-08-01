@@ -66,6 +66,7 @@ function download_file() {
 function update_dotdev() {
     echo -e "${INFO} Updating Dotdev..."
     # Assurer que les fichiers sont déjà téléchargés et mis à jour dans le répertoire .devcontainer/dotdev
+    rm -r ./.devcontainer/dotdev
     cp -R $PATH_TO_TEMP_DIR/dotdev ./.devcontainer || { echo -e "${ERROR} Failed to copy dotdev files."; exit 1; }
     echo -e "${SUCCESS} Dotdev files have been updated successfully!"
 }
@@ -78,7 +79,6 @@ function create_devcontainer() {
     local DEST_DIR="./.devcontainer"
     local DOTDEV_DIR="$PATH_TO_TEMP_DIR/dotdev"
 
- 
 
     if [ ! -d "$STUBS_DIR" ]; then
         echo -e "${ERROR} Template $TEMPLATE_CHOICE does not exist."

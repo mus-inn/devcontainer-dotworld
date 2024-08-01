@@ -7,7 +7,6 @@ cd $WORKSPACE_DIR
 if ! command -v figlet &> /dev/null
 then
     echo "figlet n'est pas installé. Veuillez l'installer et réessayer."
-    exit
 fi
 
 # Vérifiez si la police est installée
@@ -54,7 +53,12 @@ fi
 # Affiche le message de bienvenue
 echo -e "${COLOR_GREEN}Welcome ${GITHUB_USER:-} to"
 echo ""
-figlet -f /usr/share/figlet/fonts/'ANSI Shadow.flf' -w 200 "$project"
+if ! command -v figlet &> /dev/null
+then
+    echo -e "$project"
+else
+    figlet -f /usr/share/figlet/fonts/'ANSI Shadow.flf' -w 200 "$project"
+fi
 echo -e "By Dotworld"
 echo -e "Shell $shell_type"
 echo -e "${COLOR_RESET}"
