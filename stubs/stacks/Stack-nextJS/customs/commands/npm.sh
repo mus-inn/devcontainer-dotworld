@@ -17,7 +17,6 @@ MAGENTA='\033[0;35m'
 CYAN='\033[0;36m'
 WHITE='\033[0;37m'
 
-
 # Fonction pour afficher le menu de sélection avec `gum`
 show_menu() {
     local choice
@@ -27,6 +26,13 @@ show_menu() {
         "Compiler le site de production" \
         "Lancer le serveur local basé sur un build" \
         "Exécuter 'npm run build' et 'npm run start'" \
+        "Exécuter 'npm run lint'" \
+        "Lancer Storybook" \
+        "Compiler Storybook" \
+        "Vérifier le code avec Prettier" \
+        "Corriger le code avec Prettier" \
+        "Vérifier les types TypeScript" \
+        "Nettoyer le build" \
         "Quitter" \
     )
 
@@ -42,6 +48,27 @@ show_menu() {
             ;;
         "Exécuter 'npm run build' et 'npm run start'")
             execute_command 4
+            ;;
+        "Exécuter 'npm run lint'")
+            execute_command 5
+            ;;
+        "Lancer Storybook")
+            execute_command 6
+            ;;
+        "Compiler Storybook")
+            execute_command 7
+            ;;
+        "Vérifier le code avec Prettier")
+            execute_command 8
+            ;;
+        "Corriger le code avec Prettier")
+            execute_command 9
+            ;;
+        "Vérifier les types TypeScript")
+            execute_command 10
+            ;;
+        "Nettoyer le build")
+            execute_command 11
             ;;
         "Quitter")
             print_message "Quitter" "❌"
@@ -69,6 +96,34 @@ execute_command() {
             print_message "Exécution de 'npm run build' et 'npm run start'..." "🔄"
             npm run preview
             ;;
+        5)
+            print_message "Exécution de 'npm run lint'..." "🔄"
+            npm run lint
+            ;;
+        6)
+            print_message "Lancement de Storybook..." "🔄"
+            npm run storybook
+            ;;
+        7)
+            print_message "Compilation de Storybook..." "🔄"
+            npm run build-storybook
+            ;;
+        8)
+            print_message "Vérification du code avec Prettier..." "🔄"
+            npm run prettier:check
+            ;;
+        9)
+            print_message "Correction du code avec Prettier..." "🔄"
+            npm run prettier:fix
+            ;;
+        10)
+            print_message "Vérification des types TypeScript..." "🔄"
+            npm run type-check
+            ;;
+        11)
+            print_message "Nettoyage du build..." "🔄"
+            npm run clean
+            ;;
         *)
             print_message "Choix invalide" "❌"
             ;;
@@ -83,6 +138,13 @@ prompt_user() {
         "build" \
         "start" \
         "preview" \
+        "lint" \
+        "storybook" \
+        "build-storybook" \
+        "prettier:check" \
+        "prettier:fix" \
+        "type-check" \
+        "clean" \
     )
 
     case $option in
@@ -101,6 +163,34 @@ prompt_user() {
         "preview")
             print_message "Exécution de 'npm run build' et 'npm run start'..." "🔄"
             npm run preview
+            ;;
+        "lint")
+            print_message "Exécution de 'npm run lint'..." "🔄"
+            npm run lint
+            ;;
+        "storybook")
+            print_message "Lancement de Storybook..." "🔄"
+            npm run storybook
+            ;;
+        "build-storybook")
+            print_message "Compilation de Storybook..." "🔄"
+            npm run build-storybook
+            ;;
+        "prettier:check")
+            print_message "Vérification du code avec Prettier..." "🔄"
+            npm run prettier:check
+            ;;
+        "prettier:fix")
+            print_message "Correction du code avec Prettier..." "🔄"
+            npm run prettier:fix
+            ;;
+        "type-check")
+            print_message "Vérification des types TypeScript..." "🔄"
+            npm run type-check
+            ;;
+        "clean")
+            print_message "Nettoyage du build..." "🔄"
+            npm run clean
             ;;
         *)
             print_message "Commande invalide : $option" "❌"
@@ -127,6 +217,34 @@ if [ $# -eq 1 ]; then
         preview)
             print_message "Exécution de 'npm run build' et 'npm run start'..." "🔄"
             npm run preview
+            ;;
+        lint)
+            print_message "Exécution de 'npm run lint'..." "🔄"
+            npm run lint
+            ;;
+        storybook)
+            print_message "Lancement de Storybook..." "🔄"
+            npm run storybook
+            ;;
+        build-storybook)
+            print_message "Compilation de Storybook..." "🔄"
+            npm run build-storybook
+            ;;
+        prettier:check)
+            print_message "Vérification du code avec Prettier..." "🔄"
+            npm run prettier:check
+            ;;
+        prettier:fix)
+            print_message "Correction du code avec Prettier..." "🔄"
+            npm run prettier:fix
+            ;;
+        type-check)
+            print_message "Vérification des types TypeScript..." "🔄"
+            npm run type-check
+            ;;
+        clean)
+            print_message "Nettoyage du build..." "🔄"
+            npm run clean
             ;;
         *)
             print_message "Commande invalide : $1" "❌"

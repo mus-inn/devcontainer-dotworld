@@ -1,5 +1,9 @@
+# Définir des arguments de build pour l'architecture et le système d'exploitation cibles
+ARG TARGETOS
+ARG TARGETARCH
+
 # Utiliser l'image de base fournie
-FROM chdotworld/dotworld:base-alpine
+FROM --platform=$BUILDPLATFORM  chdotworld/dotworld:base-alpine
 
 
 # Label de mainteneur
@@ -57,6 +61,3 @@ RUN chmod +x /usr/local/bin/start-container
 
 # Point d'entrée du conteneur
 ENTRYPOINT ["start-container"]
-
-# Configuration de l'heure pour le conteneur
-ENV TZ=Europe/Paris

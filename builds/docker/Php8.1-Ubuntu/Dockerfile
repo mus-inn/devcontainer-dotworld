@@ -48,7 +48,7 @@ RUN apt-get update \
         php8.1-msgpack php8.1-igbinary php8.1-redis php8.1-swoole \
         php8.1-memcached php8.1-pcov php8.1-xdebug \
         mysql-client postgresql-client-$POSTGRES_VERSION \
-        docker-ce docker-ce-cli containerd.io \
+        docker-ce docker-ce-cli containerd.io figlet \
      && curl -sLS https://deb.nodesource.com/setup_$NODE_VERSION.x | bash - \
      && apt-get install -y nodejs \
      && npm install -g npm yarn\
@@ -61,14 +61,10 @@ RUN  curl -sLS https://getcomposer.org/installer | php -- --install-dir=/usr/bin
 
 RUN setcap "cap_net_bind_service=+ep" /usr/bin/php8.1
 
-RUN useradd -ms /bin/zsh --no-user-group -g $WWWGROUP -u 1337 vscode
-RUN usermod -aG docker vscode
+RUN groupadd --force -g $WWWGROUP sail
+RUN useradd -ms /bin/bash --no-user-group -g $WWWGROUP -u 1337 sail
 
 RUN ln -f /bin/zsh /bin/sh
-
-USER vscode
-WORKDIR /home/vscode
-RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
 USER root
 
