@@ -127,6 +127,27 @@ function prompt() {
     echo $INPUT
 }
 
+
+# Fonction pour obtenir le nom du dépôt Git
+get_git_repo_name() {
+    # Vérifie si le répertoire courant est un dépôt Git
+    if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+        # Obtient le nom du dépôt Git
+        git_repo_name=$(basename $(git rev-parse --show-toplevel))
+        echo "$git_repo_name"
+    else
+        echo ""
+    fi
+}
+
+# Fonction pour obtenir le nom du répertoire courant
+get_current_directory_name() {
+    current_directory_name=$(basename "$PWD")
+    echo "$current_directory_name"
+}
+
+
+
 # Fonction pour afficher les options du menu principal et récupérer le choix utilisateur
 function show_main_menu() {
     echo -e "${INFO} Please select an option:"
@@ -146,7 +167,15 @@ function show_main_menu() {
             show_stacks
             TEMPLATE=$(choose_template)
             echo -e "${INFO} Template chosen: $TEMPLATE"
-            local APP_NAME=$(prompt "${INFO} Enter the APP_NAME: ")
+            # Détermine le nom de l'application
+            git_repo_name=$(get_git_repo_name)
+            if [ -n "$git_repo_name" ]; then
+                # Si un nom de dépôt Git est trouvé, l'utiliser
+                APP_NAME="$git_repo_name"
+            else
+                # Sinon, utiliser le nom du répertoire courant
+                APP_NAME=$(get_current_directory_name)
+            fi
             create_devcontainer $TEMPLATE $APP_NAME
             ;;
         3)
