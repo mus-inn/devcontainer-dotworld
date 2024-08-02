@@ -2,6 +2,7 @@
 
 # Répertoire contenant les configurations et les scripts
 export SCRIPT_DIR=$(dirname "$0")
+export SCRIPT_DIR=$(cd "$SCRIPT_DIR" && pwd)
 # Chemin complet
 full_path=$(dirname $(dirname "$SCRIPT_DIR"))
 # Obtenir le répertoire parent deux niveaux au-dessus

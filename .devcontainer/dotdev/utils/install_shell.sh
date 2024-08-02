@@ -1,7 +1,10 @@
 #!/bin/bash
 
 # Répertoire contenant les configurations et les scripts
+# Répertoire contenant les configurations et les scripts
 export SCRIPT_DIR=$(dirname "$0")
+export SCRIPT_DIR=$(cd "$SCRIPT_DIR" && pwd)
+echo -e "Script directory: $SCRIPT_DIR"
 # Chemin complet
 full_path=$(dirname $(dirname "$SCRIPT_DIR"))
 # Obtenir le répertoire parent deux niveaux au-dessus
