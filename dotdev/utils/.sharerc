@@ -1,9 +1,21 @@
 #Interactive shell
 chmod +x ${UTILS_DIR}/interactive_shell.sh
 
+function canUpdateDevContainer() {
+   WELCOME_SCRIPT="${UTILS_DIR}/welcome.sh"
+    # Vérifier si le fichier est exécutable
+    if [ ! -x "$WELCOME_SCRIPT" ]; then
+        updatedevcontainer
+    fi
+}
+
+export -f canUpdateDevContainer
+
+canUpdateDevContainer
+
 
 # Aliases
-# some more ls aliases
+# some more ls aliases 
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
@@ -15,9 +27,11 @@ alias nowtime=now
 alias nowdate='date +"%d-%m-%Y"'
 alias llall="ls -al"
 alias dotdev="bash ${UTILS_DIR}/interactive_shell.sh"
+alias updatedevcontainer="bash ${UTILS_DIR}install_shell.sh"
+
 
 # Alias to call welcome script on clear
-alias reset='reset && ${UTILS_DIR}/welcome.sh'
+alias reset='reset && canUpdateDevContainer && ${WELCOME_SCRIPT}'
 
 # Call welcome script on terminal start
 source ${UTILS_DIR}/welcome.sh
