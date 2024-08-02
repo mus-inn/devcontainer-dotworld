@@ -1,13 +1,7 @@
 #!/bin/bash
 
-git config --global --add safe.directory $WORKSPACE_DIR
 cd $WORKSPACE_DIR
-
-# Vérifiez si figlet est installé
-if ! command -v figlet &> /dev/null
-then
-    echo "figlet n'est pas installé. Veuillez l'installer et réessayer."
-fi
+git config --global --add safe.directory $WORKSPACE_DIR
 
 # Vérifiez si la police est installée
 if [ ! -f "/usr/share/figlet/fonts/ANSI_Shadow.flf" ]; then
@@ -50,15 +44,20 @@ if [ -z "$GITHUB_USER" ]; then
     GITHUB_USER=$(git config user.name)
 fi
 
+clear
+
 # Affiche le message de bienvenue
 echo -e "${COLOR_GREEN}Welcome ${GITHUB_USER:-} to"
 echo ""
+# Vérifiez si figlet est installé
 if ! command -v figlet &> /dev/null
 then
-    echo -e "$project"
+    echo -e "${COLOR_GREEN}$project"
 else
-    figlet -f /usr/share/figlet/fonts/'ANSI Shadow.flf' -w 200 "$project"
+    figlet -f /usr/share/figlet/fonts/'ANSI Shadow.flf' -w 200 "$project"    
 fi
+
+
 echo -e "By Dotworld"
 echo -e "Shell $shell_type"
 echo -e "${COLOR_RESET}"

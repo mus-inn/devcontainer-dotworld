@@ -16,6 +16,7 @@ export CONFIG_DIR="${UTILS_DIR}/stubs"
 
 export APP_NAME=$(basename `git rev-parse --show-toplevel`)
 
+
 # Utilisateur courant et root
 USERS=("vscode" "root")
 
@@ -68,7 +69,10 @@ done
 source ${UTILS_DIR}/install_gum.sh
 source ${CUSTOM_DIR}/install.sh
 
+
+# Copie du makefile
 cp $CONFIG_DIR/makefile $WORKSPACE_DIR/makefile
+sed -i "s/##APP_NAME##/\"${APP_NAME}\"/g" $WORKSPACE_DIR/makefile
 
 echo "Configuration des shells installée avec succès."
 

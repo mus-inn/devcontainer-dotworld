@@ -1,5 +1,4 @@
-#Interactive shell
-chmod +x ${UTILS_DIR}/interactive_shell.sh
+
 
 
 # Aliases

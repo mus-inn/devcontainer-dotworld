@@ -1,14 +1,9 @@
 #!/bin/bash
 
-git config --global --add safe.directory $WORKSPACE_DIR
-cd $WORKSPACE_DIR
 
-# Vérifiez si figlet est installé
-if ! command -v figlet &> /dev/null
-then
-    echo "figlet n'est pas installé. Veuillez l'installer et réessayer."
-    exit
-fi
+
+cd $WORKSPACE_DIR
+git config --global --add safe.directory $WORKSPACE_DIR
 
 # Vérifiez si la police est installée
 if [ ! -f "/usr/share/figlet/fonts/ANSI_Shadow.flf" ]; then
@@ -28,7 +23,7 @@ if [ ! -f "/usr/share/figlet/fonts/ANSI_Shadow.flf" ]; then
     rm -rf figlet-fonts-master.zip figlet-fonts-master > /dev/null 2>&1
 fi
 
-clear
+
 
 # Définir la couleur (vert dans cet exemple)
 COLOR_GREEN='\033[0;32m'
@@ -51,10 +46,20 @@ if [ -z "$GITHUB_USER" ]; then
     GITHUB_USER=$(git config user.name)
 fi
 
+clear
+
 # Affiche le message de bienvenue
 echo -e "${COLOR_GREEN}Welcome ${GITHUB_USER:-} to"
 echo ""
-figlet -f /usr/share/figlet/fonts/'ANSI Shadow.flf' -w 200 "$project"
+# Vérifiez si figlet est installé
+if ! command -v figlet &> /dev/null
+then
+    echo "${COLOR_GREEN}$project"
+else
+    figlet -f /usr/share/figlet/fonts/'ANSI Shadow.flf' -w 200 "$project"    
+fi
+
+
 echo -e "By Dotworld"
 echo -e "Shell $shell_type"
 echo -e "${COLOR_RESET}"

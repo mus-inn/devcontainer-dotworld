@@ -14,6 +14,7 @@ export CUSTOM_COMMANDS_DIR="${CUSTOM_DIR}/commands"
 export UTILS_DIR="${DOTDEV_DIR}/utils"
 export CONFIG_DIR="${UTILS_DIR}/stubs"
 
+git config --global --add safe.directory $WORKSPACE_DIR
 export APP_NAME=$(basename `git rev-parse --show-toplevel`)
 
 # Utilisateur courant et root
@@ -28,9 +29,6 @@ for USER in "${USERS[@]}"; do
     # Copie des fichiers .bashrc et .zshrc
     sudo cp "$CONFIG_DIR/.bashrc" "$HOME_DIR/.bashrc"
     sudo cp "$CONFIG_DIR/.zshrc" "$HOME_DIR/.zshrc"
-
-    #fix permsission executable
-    sudo chmod +x "$UTILS_DIR/welcome.sh"
 
     # Ajouter les variable et scripts .bashrc et .zshrc
     echo "export WORKSPACE_DIR=\"$WORKSPACE_DIR\"" >> "$HOME_DIR/.bashrc"
@@ -65,9 +63,24 @@ for USER in "${USERS[@]}"; do
 
 done
 
+
+#Interactive shell
+sudo chmod +x ${UTILS_DIR}/interactive_shell.sh
+
+#fix permsission executable
+sudo chmod +x "$UTILS_DIR/welcome.sh"
+
+#Fix des poermissions
+sudo chown -R root:root $WORKSPACE_DIR
+
+
+
 source ${CUSTOM_DIR}/install.sh
 
+# Copie du makefile
 cp $CONFIG_DIR/makefile $WORKSPACE_DIR/makefile
+sed -i "s/##APP_NAME##/\"${APP_NAME}\"/g" $WORKSPACE_DIR/makefile
+
 
 echo "Configuration des shells installée avec succès."
 
