@@ -5,10 +5,7 @@
 	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
 	"dockerComposeFile": "docker/docker-compose.yml",
 	"service": "##APP_NAME##",
-	"runServices": [
-		"##APP_NAME##_mysql",
-		"##APP_NAME##_redis"
-	],
+	"runServices": [],
 	"workspaceFolder": "/workspaces/##APP_NAME##",
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	"features": {},
