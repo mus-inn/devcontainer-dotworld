@@ -27,7 +27,7 @@ alias nowtime=now
 alias nowdate='date +"%d-%m-%Y"'
 alias llall="ls -al"
 alias dotdev="bash ${UTILS_DIR}/interactive_shell.sh"
-alias updatedevcontainer="bash ${UTILS_DIR}install_shell.sh"
+alias updatedevcontainer="bash ${UTILS_DIR}/install_shell.sh"
 
 
 # Alias to call welcome script on clear
