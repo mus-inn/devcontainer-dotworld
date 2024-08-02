@@ -22,7 +22,6 @@
 		"vscode": {
 			"extensions": [
 				"GitHub.copilot",
-				"onecentlin.laravel-extension-pack",
 				"vivaxy.vscode-conventional-commits",
 				"mhutchie.git-graph",
 				"ms-vscode-remote.remote-containers",
@@ -30,6 +29,5 @@
 				"GitHub.vscode-github-actions"
 			]
 		}
-	},
-	"remoteUser": "vscode"
+	}
 }

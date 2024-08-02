@@ -32,7 +32,9 @@
 		"vscode": {
 			"extensions": [
 				"GitHub.copilot",
-				"onecentlin.laravel-extension-pack",
+				"esbenp.prettier-vscode",
+				"christian-kohler.path-intellisense",
+				"formulahendry.auto-close-tag",
 				"vivaxy.vscode-conventional-commits",
 				"mhutchie.git-graph",
 				"ms-vscode-remote.remote-containers",
@@ -40,6 +42,5 @@
 				"GitHub.vscode-github-actions"
 			]
 		}
-	},
-	"remoteUser": "vscode"
+	}
 }
