@@ -5,7 +5,8 @@ function canUpdateDevContainer() {
    WELCOME_SCRIPT="${UTILS_DIR}/welcome.sh"
     # Vérifier si le fichier est exécutable
     if [ ! -x "$WELCOME_SCRIPT" ]; then
-        updatedevcontainer
+        chmod +x ${UTILS_DIR}/install_shell.sh
+        bash ${UTILS_DIR}/install_shell.sh
     fi
 }
 

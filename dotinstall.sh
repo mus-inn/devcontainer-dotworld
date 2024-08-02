@@ -62,11 +62,6 @@ function download_file() {
     fi
 }
 
-function updateTerminalShellDevcontainer(){
-    if alias updatedevcontainer &>/dev/null; then
-        updatedevcontainer
-    fi
-}
 
 # Fonction pour mettre à jour Dotdev
 function update_dotdev() {
@@ -74,7 +69,6 @@ function update_dotdev() {
     # Assurer que les fichiers sont déjà téléchargés et mis à jour dans le répertoire .devcontainer/dotdev
     rm -r ./.devcontainer/dotdev
     cp -R $PATH_TO_TEMP_DIR/dotdev ./.devcontainer || { echo -e "${ERROR} Failed to copy dotdev files."; exit 1; }
-    updateTerminalShellDevcontainer
     echo -e "${SUCCESS} Dotdev files have been updated successfully!"
 }
 
@@ -104,7 +98,6 @@ function create_devcontainer() {
     find $DEST_DIR -type f -name "*.bak" -exec rm {} \;
 
     cp -r $DOTDEV_DIR/. $DEST_DIR/dotdev || { echo -e "${ERROR} Failed to copy template files."; exit 1; }
-    updateTerminalShellDevcontainer
     echo -e "${SUCCESS} New devcontainer environment has been created successfully!"
 }
 
