@@ -257,6 +257,13 @@ TEMP_DIR_NAME="$REPO_NAME-latest"
 PATH_TO_TEMP_DIR="$TEMP_DIR/$TEMP_DIR_NAME"
 download_file $DOWNLOAD_URL $TEMP_DIR/$REPO_NAME.tar.gz
 tar -xzf $TEMP_DIR/$REPO_NAME.tar.gz -C $TEMP_DIR
+
+echo "PATH_TO_TEMP_DIR: $PATH_TO_TEMP_DIR"
+echo "TEMP_DIR: $TEMP_DIR"
+echo "TEMP_DIR_NAME: $TEMP_DIR_NAME"
+echo "REPO_NAME: $REPO_NAME"
+mv "$TEMP_DIR/${REPO_NAME}-"* $TEMP_DIR/$TEMP_DIR_NAME
+
 echo -e "${SUCCESS} Downloaded and extracted the latest version."
 
 sleep 1
