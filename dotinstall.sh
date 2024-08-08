@@ -20,6 +20,9 @@ REPO_NAME="devcontainer-dotworld"
 TEMP_DIR=$(mktemp -d)
 trap 'rm -rf "$TEMP_DIR"' EXIT
 
+
+
+
 # Fonction pour obtenir la dernière version du dépôt GitHub
 function get_latest_version() {
     local latest_version=$(curl -s "https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/releases/latest" | grep '"tag_name":' | sed -E 's/.*"tag_name": "([^"]+)".*/\1/')
@@ -32,8 +35,7 @@ function get_latest_version() {
 
 # Fonction pour construire l'URL de téléchargement
 function get_download_url() {
-    local version=$1
-    echo "https://github.com/$REPO_OWNER/$REPO_NAME/archive/refs/tags/$version.tar.gz"
+    echo "https://github.com/$REPO_OWNER/$REPO_NAME/releases/latest/download/sources.tar.gz"
 }
 
 # Fonction pour télécharger le fichier
@@ -243,14 +245,19 @@ function choose_template() {
 
 
 clear
-#download latest version
-LATEST_VERSION=$(get_latest_version)
-DOWNLOAD_URL=$(get_download_url $LATEST_VERSION)
-TEMP_DIR_NAME="$REPO_NAME-$LATEST_VERSION"
+
+
+echo -e "${INFO} Downloading the latest version ..."
+
+DOWNLOAD_URL=$(get_download_url)
+
+echo -e "${INFO} Download URL: $DOWNLOAD_URL"
+
+TEMP_DIR_NAME="$REPO_NAME-latest"
 PATH_TO_TEMP_DIR="$TEMP_DIR/$TEMP_DIR_NAME"
 download_file $DOWNLOAD_URL $TEMP_DIR/$REPO_NAME.tar.gz
 tar -xzf $TEMP_DIR/$REPO_NAME.tar.gz -C $TEMP_DIR
-echo -e "${SUCCESS} Downloaded and extracted the latest version $LATEST_VERSION."
+echo -e "${SUCCESS} Downloaded and extracted the latest version."
 
 sleep 1
 clear
