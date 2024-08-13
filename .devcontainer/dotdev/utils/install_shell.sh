@@ -80,9 +80,20 @@ sudo chown -R root:root $WORKSPACE_DIR
 
 source ${CUSTOM_DIR}/install.sh
 
+
+# Ajouter le makefile au .gitignore s'il n'y est pas déjà
+GITIGNORE_FILE="${WORKSPACE_DIR}/.gitignore"
+if [ -f "$GITIGNORE_FILE" ]; then
+    if ! grep -q "^Makefile$" "$GITIGNORE_FILE"; then
+        echo "Makefile" >> "$GITIGNORE_FILE"
+        # Vider le cache Git afin que le gitIgnore soit pris en compte
+        git rm --cached "$WORKSPACE_DIR/Makefile"
+    fi
+fi
+
 # Copie du makefile
-cp $CONFIG_DIR/makefile $WORKSPACE_DIR/makefile
-sed -i "s/##APP_NAME##/\"${APP_NAME}\"/g" $WORKSPACE_DIR/makefile
+cp $CONFIG_DIR/Makefile $WORKSPACE_DIR/Makefile
+sed -i "s/##APP_NAME##/\"${APP_NAME}\"/g" $WORKSPACE_DIR/Makefile
 
 
 echo "Configuration des shells installée avec succès."
