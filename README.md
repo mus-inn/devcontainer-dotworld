@@ -113,7 +113,7 @@ Dotdev fournit un terminal avec un en-tête mis à jour à chaque réinitialisat
 
 Dotdev vous permet de mettre à jour le conteneur de développement, de changer l'environnement, et de gérer les images Docker. Utilisez `dotdev` pour simplifier vos tâches courantes sans mémoriser une tonne de commandes.
 
-ℹ️ **tip:** dotdev se lance depuis le container Docker, il faut donc d'abord executer `bash make` depuis la racine du projet pour aller dans le container.
+ℹ️ **tip:** dotdev se lance depuis le container Docker, il faut donc d'abord executer `make bash` depuis la racine du projet pour aller dans le container.
 
 ### Créez de Nouvelles Commandes pour Vous et vos Collègues :
 
