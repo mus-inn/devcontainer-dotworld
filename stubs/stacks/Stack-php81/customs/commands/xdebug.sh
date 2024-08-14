@@ -6,6 +6,8 @@ author="Okeanos"
 
 PHP_XDEBUG_INI="/etc/php/8.1/cli/conf.d/20-xdebug.ini"
 
+source $UTILS_DIR/functions.sh
+
 # Function to install Xdebug
 install_xdebug() {
     print_message "Installing Xdebug..."
