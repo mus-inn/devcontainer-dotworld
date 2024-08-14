@@ -7,11 +7,53 @@ author="Gtko"
 
 source $UTILS_DIR/functions.sh
 
+# Vérifier si PHP-CLI est installé
+if ! command -v php &> /dev/null
+then
+    print_message "Installation de PHP-CLI..." "📦"
+    
+    # Détecter le gestionnaire de paquets du système et installer PHP-CLI
+    if [[ -n "$(command -v apt-get)" ]]; then
+        sudo apt-get update
+        sudo apt-get install -y php-cli
+    elif [[ -n "$(command -v yum)" ]]; then
+        sudo yum install -y php-cli
+    elif [[ -n "$(command -v dnf)" ]]; then
+        sudo dnf install -y php-cli
+    elif [[ -n "$(command -v pacman)" ]]; then
+        sudo pacman -Syu php-cli
+    elif [[ -n "$(command -v brew)" ]]; then
+        brew install php
+    else
+        print_message "Gestionnaire de paquets non supporté. Veuillez installer PHP-CLI manuellement.." "❌"
+        exit 1
+    fi
+    print_message "Installation de PHP-CLI terminée!" "✅"
+fi
+
 # Chemin vers le fichier de sauvegarde
 SAVE_FILE="$HOME/state-expose.txt"
 
-# Si le fichier existe et que l'argument force n'est pas passé, utiliser le nom enregistré
-if [[ -f "$SAVE_FILE" && "$1" != "force" ]]; then
+# Gestion du paramètre --force
+force=false
+share_url="http://127.0.0.1:80"
+
+# Parcourir les arguments pour détecter --force et éventuellement une URL
+for arg in "$@"; do
+    case $arg in
+        --force)
+            force=true
+            shift
+            ;;
+        *)
+            share_url="$arg"
+            shift
+            ;;
+    esac
+done
+
+# Si le fichier existe et que l'option --force n'est pas passée, utiliser le nom enregistré
+if [[ -f "$SAVE_FILE" && "$force" != true ]]; then
     random_name=$(cat "$SAVE_FILE")
 else
     # Définir les noms communs masculins et féminins avec beaucoup plus de choix (200+)
@@ -62,7 +104,6 @@ else
         superlative="$superlative-"
     fi
 
-
     random_name="${noun}-${superlative}${adjective}"
     # Sauvegarder le nom généré dans le fichier
     echo "$random_name" > "$SAVE_FILE"
@@ -71,12 +112,7 @@ fi
 # Créer une variable d'environnement avec le nom généré ou récupéré
 export RANDOM_ENV_NAME="$random_name"
 
-
-# Définir l'URL par défaut ou prendre celle fournie en argument
-share_url=${1:-"http://127.0.0.1:80"}
-
 # Exécuter la commande expose avec le sous-domaine généré
-
 bin="$DOTDEV_DIR/bin/expose"
 chmod +x "$bin"
 
