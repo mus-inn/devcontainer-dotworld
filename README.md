@@ -125,6 +125,13 @@ Dotdev vous permet de mettre à jour le conteneur de développement, de changer 
 
 [<img src="https://cdn.loom.com/sessions/thumbnails/73777a437bb041aea2d4d2e85bbe1058-0ac757b63040f2ab-full-play.gif" width="50%">](https://www.loom.com/embed/73777a437bb041aea2d4d2e85bbe1058?sid=163e7356-17e6-421b-8c19-1db927d7bf53)
 
+#### Utiliser le depot local pour le developpement de votre Stack
+💡 If you want to use local devcontainer-dotworld repository, please add the following code to your .bashrc/.zshrc to set the vars
+```
+    export DEVCONTAINER_USE_LOCAL_REPOSITORY=true 
+    export DEVCONTAINER_LOCAL_REPOSITORY_FULLPATH=/path/to/devcontainer-dotworld # Change this to your local repository path
+```
+ This mode will use the local repository instead of the remote one.
 
 ## Comment exposer le port de votre application en public sur Codespaces
 
