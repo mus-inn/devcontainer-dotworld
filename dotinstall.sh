@@ -12,6 +12,8 @@ SUCCESS="${GREEN}✅${NC}"
 WARNING="${YELLOW}⚠️${NC}"
 ERROR="${RED}❌${NC}"
 
+DEBUG="false"
+
 # Variables globales
 REPO_OWNER="mus-inn"
 REPO_NAME="devcontainer-dotworld"
@@ -30,6 +32,7 @@ function get_latest_version() {
         echo -e "${ERROR} Failed to fetch the latest version."
         exit 1
     fi
+
     echo "$latest_version"
 }
 
@@ -105,7 +108,7 @@ function create_devcontainer() {
 
 # Fonction pour construire une image Docker
 function build_docker_image() {
-    cd $PATH_TO_TEMP_DIR 
+    cd $PATH_TO_TEMP_DIR
     if [ ! -f "$PATH_TO_TEMP_DIR/build.sh" ]; then
         echo -e "${ERROR} build.sh script not found in the current directory."
         exit 1
@@ -216,7 +219,7 @@ function show_stacks() {
 function choose_template() {
     local index=1
     local template_options=()
-    
+
     for dir in $PATH_TO_TEMP_DIR/stubs/stacks/*; do
         if [ -d "$dir" ]; then
             local template_name=$(basename "$dir")
@@ -246,25 +249,39 @@ function choose_template() {
 
 clear
 
-
-echo -e "${INFO} Downloading the latest version ..."
-
-DOWNLOAD_URL=$(get_download_url)
-
-echo -e "${INFO} Download URL: $DOWNLOAD_URL"
-
 TEMP_DIR_NAME="$REPO_NAME-latest"
 PATH_TO_TEMP_DIR="$TEMP_DIR/$TEMP_DIR_NAME"
-download_file $DOWNLOAD_URL $TEMP_DIR/$REPO_NAME.tar.gz
-tar -xzf $TEMP_DIR/$REPO_NAME.tar.gz -C $TEMP_DIR
 
-echo "PATH_TO_TEMP_DIR: $PATH_TO_TEMP_DIR"
-echo "TEMP_DIR: $TEMP_DIR"
-echo "TEMP_DIR_NAME: $TEMP_DIR_NAME"
-echo "REPO_NAME: $REPO_NAME"
-mv "$TEMP_DIR/${REPO_NAME}-"* $TEMP_DIR/$TEMP_DIR_NAME
+if [ "$DEBUG" = "true" ]; then
+  echo "PATH_TO_TEMP_DIR: $PATH_TO_TEMP_DIR"
+  echo "TEMP_DIR: $TEMP_DIR"
+  echo "TEMP_DIR_NAME: $TEMP_DIR_NAME"
+  echo "REPO_NAME: $REPO_NAME"
+fi
 
-echo -e "${SUCCESS} Downloaded and extracted the latest version."
+
+if [ "$DEVCONTAINER_USE_LOCAL_REPOSITORY" = "true" ]; then
+    echo "Local repository is enabled."
+    echo "Local repository path: $DEVCONTAINER_LOCAL_REPOSITORY_FULLPATH"
+
+    echo -e "${INFO} Linking the repository ..."
+    ln -s $DEVCONTAINER_LOCAL_REPOSITORY_FULLPATH $TEMP_DIR/$TEMP_DIR_NAME
+else
+    echo "Local repository is not enabled."
+    echo -e "${INFO} Downloading the latest version ..."
+
+    DOWNLOAD_URL=$(get_download_url)
+
+    echo -e "${INFO} Download URL: $DOWNLOAD_URL"
+
+    download_file $DOWNLOAD_URL $TEMP_DIR/$REPO_NAME.tar.gz
+
+    tar -xzf $TEMP_DIR/$REPO_NAME.tar.gz -C $TEMP_DIR
+    mv "$TEMP_DIR/${REPO_NAME}-"* $TEMP_DIR/$TEMP_DIR_NAME
+
+    echo -e "${SUCCESS} Downloaded and extracted the latest version."
+
+fi
 
 sleep 1
 clear
