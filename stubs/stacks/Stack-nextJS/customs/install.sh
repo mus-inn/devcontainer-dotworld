@@ -16,4 +16,3 @@
 # Ajoutez vos commandes d'installation et de configuration ci-dessous
 
 cd $WORKSPACE_DIR
-npm install
