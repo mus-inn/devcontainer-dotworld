@@ -174,7 +174,8 @@ function execute_script() {
 
           echo -e ""
           echo -e ""
-          bash "$script"
+          shift
+          bash "$script" "$@"
 
           force_enter_to_continue
     else
