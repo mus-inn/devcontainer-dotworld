@@ -143,18 +143,21 @@ Pour commencer, ouvrez Visual Studio et naviguez vers l'onglet **Ports**. Cet on
 
 ![Onglet Ports](https://github.com/user-attachments/assets/2b453680-a49b-400b-b7c8-e26ce989cbba)
 
-### Étape 2 : Modifier la visibilité du port
+### Étape 2 : Exposer son application
 
-Une fois dans l'onglet des ports, cliquez avec le bouton droit de la souris sur la colonne **Visibilité** du port que vous souhaitez exposer. Un menu contextuel apparaîtra vous permettant de définir le port comme public.
+Pour exposer son application rien de plus simple
 
-![Modifier la Visibilité](https://github.com/user-attachments/assets/ac518e57-f6e4-48b4-ae02-f8b5d01a887a)
+```bash
+dotdev share
+```
 
-### Étape 3 : Exposition de l'application
+ou alors 
 
-Après avoir défini la visibilité sur **Public**, votre application sera exposée sur un domaine GitHub. Cela signifie que toute personne disposant de l'URL pourra accéder à votre application en ligne.
+```bash
+dotdev share http://localhost:8000
+```
 
-**Note:** Assurez-vous que l'exposition de votre application ne compromet pas la sécurité de vos données ou de votre système. Il est important de vérifier les paramètres de sécurité et de protection des données avant de rendre une application publique.
-
+Par default le partage se fera sur l'host 127.0.0.1:80.
 
 ## J’aimerais Apporter ma Contribution ou J'ai Repéré un Bug 🔍
 
