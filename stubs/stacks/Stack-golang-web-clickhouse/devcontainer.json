@@ -11,12 +11,10 @@
 	"features": {},
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	"forwardPorts": [
-		80,
-		1025,
-		6001,
-		3306,
+		9090,
 		6379,
-		8025
+		8123,
+		9000
 	],
 	"settings": {
 		"terminal.integrated.shell.linux": "/bin/zsh"
