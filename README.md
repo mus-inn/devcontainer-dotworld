@@ -133,17 +133,7 @@ Dotdev vous permet de mettre à jour le conteneur de développement, de changer 
 ```
  This mode will use the local repository instead of the remote one.
 
-## Comment exposer le port de votre application en public sur Codespaces
-
-Exposer le port de votre application est une étape essentielle pour rendre votre application accessible publiquement. Voici comment procéder à partir de Visual Studio Codespaces :
-
-### Étape 1 : Accéder à l'onglet des ports
-
-Pour commencer, ouvrez Visual Studio et naviguez vers l'onglet **Ports**. Cet onglet vous permet de gérer les ports de votre application, en contrôlant lesquels sont exposés et de quelle manière.
-
-![Onglet Ports](https://github.com/user-attachments/assets/2b453680-a49b-400b-b7c8-e26ce989cbba)
-
-### Étape 2 : Exposer son application
+## Exposer son application
 
 Pour exposer votre application, rien de plus simple :
 
