@@ -145,19 +145,25 @@ Pour commencer, ouvrez Visual Studio et naviguez vers l'onglet **Ports**. Cet on
 
 ### Étape 2 : Exposer son application
 
-Pour exposer son application rien de plus simple
+Pour exposer votre application, rien de plus simple :
 
 ```bash
 dotdev share
 ```
 
-ou alors 
+ou bien :
 
 ```bash
 dotdev share http://localhost:8000
 ```
 
-Par default le partage se fera sur l'host 127.0.0.1:80.
+Par défaut, le partage se fera sur l'hôte `127.0.0.1:80`.  
+Si le sous-domaine existe déjà, considérez-vous chanceux avec une probabilité de 1 sur plus de 10 000.  
+Dans ce cas, vous pouvez forcer la création d'un nouveau sous-domaine en ajoutant l'option `--force` :
+
+```bash
+dotdev share http://localhost:8000 --force
+```
 
 ## J’aimerais Apporter ma Contribution ou J'ai Repéré un Bug 🔍
 
