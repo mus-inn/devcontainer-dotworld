@@ -3,6 +3,9 @@
 # define the container name : container=container_name
 container=$(APP_NAME)
 
+container-up: ## Start the container
+	@devcontainer up --workspace-folder .
+
 zsh: ## SSH into the container
 	@docker exec -it $(container) su - vscode -c zsh
 bash: ## SSH into the container
