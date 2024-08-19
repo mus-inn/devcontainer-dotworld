@@ -1,19 +1,44 @@
-FROM golangci/golangci-lint:v1.57.2 AS golangci-lint
+# Définir des arguments de build pour l'architecture et le système d'exploitation cibles
+ARG TARGETOS
+ARG TARGETARCH
 
-RUN golangci-lint --version
+FROM chdotworld/dotworld:base-alpine
 
-FROM golang:1.22
+LABEL maintainer="Dotworld"
 
-RUN curl -sSfL https://raw.githubusercontent.com/cosmtrek/air/master/install.sh | sh -s -- -b $(go env GOPATH)/bin
+ARG GOLANG_VERSION=1.22.5
+
+USER root
+
+RUN apk update \
+  && apk upgrade \
+  && apk add --no-cache docker-cli go gcc bash musl-dev openssl-dev ca-certificates neofetch \
+  && update-ca-certificates \
+  && rm -rf /var/cache/apk/*
+
+RUN wget https://dl.google.com/go/go$GOLANG_VERSION.src.tar.gz && tar -C /usr/local -xzf go$GOLANG_VERSION.src.tar.gz
+
+RUN cd /usr/local/go/src && ./make.bash
+
+ENV PATH=$PATH:/usr/local/go/bin
+
+RUN rm go$GOLANG_VERSION.src.tar.gz
+
+#we delete the apk installed version to avoid conflict
+RUN apk del go
+
+RUN go version
+
 RUN curl -sSf https://atlasgo.sh | sh
-RUN go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.57.2
 
-RUN apt-get update && apt-get install -y git zsh curl wget vim
+COPY --from=golangci/golangci-lint /usr/bin/golangci-lint /usr/bin/golangci-lint
 
-RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+# Set working directory
+WORKDIR /var/www/html
 
-COPY builds/.zshrc /root/.zshrc
+# Install Air
+RUN go install github.com/cosmtrek/air@latest
+COPY go.mod go.sum ./
+RUN go mod download
 
-WORKDIR /app
-
-ENTRYPOINT ["zsh"]
+CMD ["air", "-c", ".air.toml"]
