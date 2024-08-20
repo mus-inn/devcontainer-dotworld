@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cmd="Serve"
-description="Lanch Air"
+description="Launch Air"
 author="Okeanos"
 
 source $UTILS_DIR/functions.sh
