@@ -1,9 +1,11 @@
 services:
   ##APP_NAME##:
-    image: chdotworld/dotworld:base-alpine
+    image: chdotworld/dotworld:golang-air-atlas-ubuntu
+
     container_name: ##APP_NAME##
     volumes:
-      - "${VOLUME_SESSIONKEEPER}:/app"
+      - "${VOLUME_SESSIONKEEPER}:/workspaces/##APP_NAME##"
+      - '/var/run/docker.sock:/var/run/docker.sock'
     networks:
       - ##APP_NAME##_network
     depends_on:
@@ -11,20 +13,6 @@ services:
       - ##APP_NAME##_redis
     ports:
       - '${AIR_PORT:-9090}:9090'
-
-#  TOREMOVE_air:
-#    image: 'cosmtrek/air:latest'
-#    container_name: ##APP_NAME##_air
-#    ports:
-#      - '${AIR_PORT:-9090}:9090'
-#    volumes:
-#      - "${VOLUME_SESSIONKEEPER}:/app"
-#    working_dir: /app
-#    networks:
-#      - ##APP_NAME##_network
-#    depends_on:
-#      - ##APP_NAME##_clickhouse_server
-#      - ##APP_NAME##_redis
 
   ##APP_NAME##_redis:
     image: 'redis:alpine'
