@@ -32,17 +32,19 @@ RUN apt-get update && \
     cmake \
     pkg-config && \
     # Configuration du fuseau horaire
-    ln -sf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone && \
-    mkdir -p $NVM_DIR && \
+    ln -sf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+RUN mkdir -p $NVM_DIR && \
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash && \
     . $NVM_DIR/nvm.sh && \
     nvm install $NODE_VERSION && \
     nvm use $NODE_VERSION && \
     nvm alias default $NODE_VERSION && \
-    ln -s $NVM_DIR/versions/node/v$NODE_VERSION/bin/node /usr/local/bin/node && \
-    ln -s $NVM_DIR/versions/node/v$NODE_VERSION/bin/npm /usr/local/bin/npm && \
+    ln -s $NVM_DIR/versions/node/v*/bin/node /usr/local/bin/node && \
+    ln -s $NVM_DIR/versions/node/v*/bin/npm /usr/local/bin/npm
+
     # Nettoyer les caches de paquets
-    apt-get remove -y gcc g++ make cmake pkg-config && \
+RUN apt-get remove -y gcc g++ make cmake pkg-config && \
     apt-get autoremove -y && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /root/.npm /root/.nvm
