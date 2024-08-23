@@ -72,6 +72,7 @@ done
 for script in "$CUSTOM_COMMANDS_DIR"/*.sh; do
     cmd=$(grep -m 1 '^cmd=' "$script" | cut -d '=' -f 2 | tr -d '"')
     description=$(grep -m 1 '^description=' "$script" | cut -d '=' -f 2 | tr -d '"')
+    description+=" (custom)"
     if [ -z "$cmd" ]; then
         cmd=$(basename "$script" .sh)
     fi
@@ -81,6 +82,7 @@ done
 for script in "$COMMANDS_DIR"/*.sh; do
     cmd=$(grep -m 1 '^cmd=' "$script" | cut -d '=' -f 2 | tr -d '"')
     description=$(grep -m 1 '^description=' "$script" | cut -d '=' -f 2 | tr -d '"')
+    description+=" (native)"
     if [ -z "$cmd" ]; then
         cmd=$(basename "$script" .sh)
     fi
@@ -131,6 +133,7 @@ function show_menu() {
     for script in "$CUSTOM_COMMANDS_DIR"/*.sh; do
         cmd=$(grep -m 1 '^cmd=' "$script" | cut -d '=' -f 2 | tr -d '"')
         description="- $(grep -m 1 '^description=' "$script" | cut -d '=' -f 2 | tr -d '"')"
+        description+=" (custom)"
         if [ -z "$cmd" ]; then
             cmd=$(basename "$script" .sh)
             description=""
@@ -145,6 +148,8 @@ function show_menu() {
     for script in "$COMMANDS_DIR"/*.sh; do
         cmd=$(grep -m 1 '^cmd=' "$script" | cut -d '=' -f 2 | tr -d '"')
         description="- $(grep -m 1 '^description=' "$script" | cut -d '=' -f 2 | tr -d '"')"
+        description+=" (native)"
+
         if [ -z "$cmd" ]; then
             cmd=$(basename "$script" .sh)
             description=""
