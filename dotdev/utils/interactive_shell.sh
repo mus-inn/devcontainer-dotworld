@@ -165,6 +165,20 @@ function show_menu() {
     echo "${files[$choice]}"
 }
 
+# Function to force enter key press to allow to see every script echos before the welcome screens is displayed
+function force_enter_to_continue() {
+  echo -e ""
+  echo -e "${COLOR_GREEN}"
+  echo "Press 'Enter' to continue, any other key will be ignored."
+
+  # The loop here continues until just 'Enter' is pressed without any other character
+  while IFS= read -r -s -n1 key
+  do
+    # Break if key is 'Enter'
+    [[ -z $key ]] && break
+  done
+}
+
 # Fonction pour exécuter le script choisi
 function execute_script() {
     local script="$CUSTOM_COMMANDS_DIR/$1"
