@@ -131,7 +131,10 @@ Dotdev vous permet de mettre à jour le conteneur de développement, de changer 
     export DEVCONTAINER_USE_LOCAL_REPOSITORY=true 
     export DEVCONTAINER_LOCAL_REPOSITORY_FULLPATH=/path/to/devcontainer-dotworld # Change this to your local repository path
 ```
- This mode will use the local repository instead of the remote one.
+This mode will use the local repository instead of the remote one.
+
+
+## Comment exposer le port de votre application en public sur Codespaces
 
 ## Exposer son application
 
