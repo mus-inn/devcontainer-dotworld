@@ -9,6 +9,7 @@ author="Gtko"
 force=false
 share_url="http://127.0.0.1"
 port=80
+custom_port_in_url=false
 
 source $UTILS_DIR/functions.sh
 
@@ -45,9 +46,13 @@ while [[ $# -gt 0 ]]; do
         --force)
             force=true
             shift
-            # Check if the next argument is a URL with port
+            # Check if the next argument is a URL with or without a port
             if [[ "$1" =~ ^http:// ]]; then
                 share_url="$1"
+                # Check if the URL already contains a port (e.g., http://example.com:8080)
+                if [[ "$share_url" =~ :[0-9]+$ ]]; then
+                    custom_port_in_url=true
+                fi
                 shift
             fi
             ;;
@@ -62,8 +67,10 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-# Combine URL and port
-share_url="${share_url}:${port}"
+# Combine URL and port only if the port was not already included in the URL
+if [[ "$custom_port_in_url" = false ]]; then
+    share_url="${share_url}:${port}"
+fi
 
 # Example usage of the force flag and share_url
 echo "Force is set to: $force"
