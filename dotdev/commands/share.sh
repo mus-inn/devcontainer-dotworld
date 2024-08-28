@@ -5,52 +5,69 @@ cmd="share"
 description="Permet d'exposer l'application sur internet."
 author="Gtko"
 
+# Default values
+force=false
+share_url="http://127.0.0.1"
+port=80
+
 source $UTILS_DIR/functions.sh
 
-# Vérifier si PHP-CLI est installé
-if ! command -v php &> /dev/null
-then
-    print_message "Installation de PHP-CLI..." "📦"
-    
-    # Détecter le gestionnaire de paquets du système et installer PHP-CLI
-    if [[ -n "$(command -v apt-get)" ]]; then
-        sudo apt-get update
-        sudo apt-get install -y php-cli
-    elif [[ -n "$(command -v yum)" ]]; then
-        sudo yum install -y php-cli
-    elif [[ -n "$(command -v dnf)" ]]; then
-        sudo dnf install -y php-cli
-    elif [[ -n "$(command -v pacman)" ]]; then
-        sudo pacman -Syu php-cli
-    elif [[ -n "$(command -v brew)" ]]; then
-        brew install php
-    else
-        print_message "Gestionnaire de paquets non supporté. Veuillez installer PHP-CLI manuellement.." "❌"
-        exit 1
+    # Vérifier si PHP-CLI est installé
+    if ! command -v php &> /dev/null
+    then
+        print_message "Installation de PHP-CLI..." "📦"
+
+        # Détecter le gestionnaire de paquets du système et installer PHP-CLI
+        if [[ -n "$(command -v apt-get)" ]]; then
+            sudo apt-get update
+            sudo apt-get install -y php-cli
+        elif [[ -n "$(command -v yum)" ]]; then
+            sudo yum install -y php-cli
+        elif [[ -n "$(command -v dnf)" ]]; then
+            sudo dnf install -y php-cli
+        elif [[ -n "$(command -v pacman)" ]]; then
+            sudo pacman -Syu php-cli
+        elif [[ -n "$(command -v brew)" ]]; then
+            brew install php
+        else
+            print_message "Gestionnaire de paquets non supporté. Veuillez installer PHP-CLI manuellement.." "❌"
+            exit 1
+        fi
+        print_message "Installation de PHP-CLI terminée!" "✅"
     fi
-    print_message "Installation de PHP-CLI terminée!" "✅"
-fi
 
 # Chemin vers le fichier de sauvegarde
 SAVE_FILE="$HOME/state-expose.txt"
 
-# Gestion du paramètre --force
-force=false
-share_url="http://127.0.0.1:80"
-
-# Parcourir les arguments pour détecter --force et éventuellement une URL
-for arg in "$@"; do
-    case $arg in
+# Loop through the arguments to detect --force, --port, and an optional URL
+while [[ $# -gt 0 ]]; do
+    case $1 in
         --force)
             force=true
             shift
+            # Check if the next argument is a URL with port
+            if [[ "$1" =~ ^http:// ]]; then
+                share_url="$1"
+                shift
+            fi
+            ;;
+        --port)
+            port="$2"
+            shift 2
             ;;
         *)
-            share_url="$arg"
+            share_url="$1"
             shift
             ;;
     esac
 done
+
+# Combine URL and port
+share_url="${share_url}:${port}"
+
+# Example usage of the force flag and share_url
+echo "Force is set to: $force"
+echo "Share URL is: $share_url"
 
 # Si le fichier existe et que l'option --force n'est pas passée, utiliser le nom enregistré
 if [[ -f "$SAVE_FILE" && "$force" != true ]]; then
@@ -122,3 +139,4 @@ $bin share "$share_url" \
     --server-port="443" \
     --auth="admin:dotworld-test-admin" \
     --subdomain="${RANDOM_ENV_NAME}"
+
