@@ -12,29 +12,29 @@ port=80
 
 source $UTILS_DIR/functions.sh
 
-    # Vérifier si PHP-CLI est installé
-    if ! command -v php &> /dev/null
-    then
-        print_message "Installation de PHP-CLI..." "📦"
+# Vérifier si PHP-CLI est installé
+if ! command -v php &> /dev/null
+then
+    print_message "Installation de PHP-CLI..." "📦"
 
-        # Détecter le gestionnaire de paquets du système et installer PHP-CLI
-        if [[ -n "$(command -v apt-get)" ]]; then
-            sudo apt-get update
-            sudo apt-get install -y php-cli
-        elif [[ -n "$(command -v yum)" ]]; then
-            sudo yum install -y php-cli
-        elif [[ -n "$(command -v dnf)" ]]; then
-            sudo dnf install -y php-cli
-        elif [[ -n "$(command -v pacman)" ]]; then
-            sudo pacman -Syu php-cli
-        elif [[ -n "$(command -v brew)" ]]; then
-            brew install php
-        else
-            print_message "Gestionnaire de paquets non supporté. Veuillez installer PHP-CLI manuellement.." "❌"
-            exit 1
-        fi
-        print_message "Installation de PHP-CLI terminée!" "✅"
+    # Détecter le gestionnaire de paquets du système et installer PHP-CLI
+    if [[ -n "$(command -v apt-get)" ]]; then
+        sudo apt-get update
+        sudo apt-get install -y php-cli
+    elif [[ -n "$(command -v yum)" ]]; then
+        sudo yum install -y php-cli
+    elif [[ -n "$(command -v dnf)" ]]; then
+        sudo dnf install -y php-cli
+    elif [[ -n "$(command -v pacman)" ]]; then
+        sudo pacman -Syu php-cli
+    elif [[ -n "$(command -v brew)" ]]; then
+        brew install php
+    else
+        print_message "Gestionnaire de paquets non supporté. Veuillez installer PHP-CLI manuellement.." "❌"
+        exit 1
     fi
+    print_message "Installation de PHP-CLI terminée!" "✅"
+fi
 
 # Chemin vers le fichier de sauvegarde
 SAVE_FILE="$HOME/state-expose.txt"
