@@ -5,13 +5,19 @@ cmd="share"
 description="Permet d'exposer l'application sur internet."
 author="Gtko"
 
+# Default values
+force=false
+share_url="http://127.0.0.1"
+port=80
+custom_port_in_url=false
+
 source $UTILS_DIR/functions.sh
 
 # Vérifier si PHP-CLI est installé
 if ! command -v php &> /dev/null
 then
     print_message "Installation de PHP-CLI..." "📦"
-    
+
     # Détecter le gestionnaire de paquets du système et installer PHP-CLI
     if [[ -n "$(command -v apt-get)" ]]; then
         sudo apt-get update
@@ -34,23 +40,41 @@ fi
 # Chemin vers le fichier de sauvegarde
 SAVE_FILE="$HOME/state-expose.txt"
 
-# Gestion du paramètre --force
-force=false
-share_url="http://127.0.0.1:80"
-
-# Parcourir les arguments pour détecter --force et éventuellement une URL
-for arg in "$@"; do
-    case $arg in
+# Loop through the arguments to detect --force, --port, and an optional URL
+while [[ $# -gt 0 ]]; do
+    case $1 in
         --force)
             force=true
             shift
+            # Check if the next argument is a URL with or without a port
+            if [[ "$1" =~ ^http:// ]]; then
+                share_url="$1"
+                # Check if the URL already contains a port (e.g., http://example.com:8080)
+                if [[ "$share_url" =~ :[0-9]+$ ]]; then
+                    custom_port_in_url=true
+                fi
+                shift
+            fi
+            ;;
+        --port)
+            port="$2"
+            shift 2
             ;;
         *)
-            share_url="$arg"
+            share_url="$1"
             shift
             ;;
     esac
 done
+
+# Combine URL and port only if the port was not already included in the URL
+if [[ "$custom_port_in_url" = false ]]; then
+    share_url="${share_url}:${port}"
+fi
+
+# Example usage of the force flag and share_url
+echo "Force is set to: $force"
+echo "Share URL is: $share_url"
 
 # Si le fichier existe et que l'option --force n'est pas passée, utiliser le nom enregistré
 if [[ -f "$SAVE_FILE" && "$force" != true ]]; then
@@ -122,3 +146,4 @@ $bin share "$share_url" \
     --server-port="443" \
     --auth="admin:dotworld-test-admin" \
     --subdomain="${RANDOM_ENV_NAME}"
+
