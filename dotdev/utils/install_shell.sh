@@ -41,19 +41,19 @@ for USER in "${USERS[@]}"; do
     echo "export DEVCONTAINER_DIR=\"$DEVCONTAINER_DIR\"" >> "$HOME_DIR/.bashrc"
     echo "export DEVCONTAINER_DIR=\"$DEVCONTAINER_DIR\"" >> "$HOME_DIR/.zshrc"
 
-	echo "export DOTDEV_DIR=\"$DOTDEV_DIR\"" >> "$HOME_DIR/.bashrc"
+	  echo "export DOTDEV_DIR=\"$DOTDEV_DIR\"" >> "$HOME_DIR/.bashrc"
     echo "export DOTDEV_DIR=\"$DOTDEV_DIR\"" >> "$HOME_DIR/.zshrc"
 
-	echo "export COMMANDS_DIR=\"$COMMANDS_DIR\"" >> "$HOME_DIR/.bashrc"
+	  echo "export COMMANDS_DIR=\"$COMMANDS_DIR\"" >> "$HOME_DIR/.bashrc"
     echo "export COMMANDS_DIR=\"$COMMANDS_DIR\"" >> "$HOME_DIR/.zshrc"
 
-	echo "export CUSTOM_DIR=\"$CUSTOM_DIR\"" >> "$HOME_DIR/.bashrc"
+	  echo "export CUSTOM_DIR=\"$CUSTOM_DIR\"" >> "$HOME_DIR/.bashrc"
     echo "export CUSTOM_DIR=\"$CUSTOM_DIR\"" >> "$HOME_DIR/.zshrc"
 
-	echo "export CUSTOM_COMMANDS_DIR=\"$CUSTOM_COMMANDS_DIR\"" >> "$HOME_DIR/.bashrc"
+	  echo "export CUSTOM_COMMANDS_DIR=\"$CUSTOM_COMMANDS_DIR\"" >> "$HOME_DIR/.bashrc"
     echo "export CUSTOM_COMMANDS_DIR=\"$CUSTOM_COMMANDS_DIR\"" >> "$HOME_DIR/.zshrc"
 
-	echo "export APP_NAME=\"$APP_NAME\"" >> "$HOME_DIR/.bashrc"
+	  echo "export APP_NAME=\"$APP_NAME\"" >> "$HOME_DIR/.bashrc"
     echo "export APP_NAME=\"$APP_NAME\"" >> "$HOME_DIR/.zshrc"
 
     echo "export UTILS_DIR=\"$UTILS_DIR\"" >> "$HOME_DIR/.bashrc"
@@ -71,9 +71,11 @@ source ${UTILS_DIR}/install_gum.sh
 source ${CUSTOM_DIR}/install.sh
 
 
-# Copie du makefile
-cp $CONFIG_DIR/makefile $WORKSPACE_DIR/makefile
-sed -i "s/##APP_NAME##/\"${APP_NAME}\"/g" $WORKSPACE_DIR/makefile
+# Copie du makefile si il n'existe pas
+if [ ! -f "$WORKSPACE_DIR/makefile" ]; then
+  cp "$CONFIG_DIR/makefile" "$WORKSPACE_DIR/makefile"
+  sed -i "s/##APP_NAME##/\"${APP_NAME}\"/g" "$WORKSPACE_DIR/makefile"
+fi
 
 echo "Configuration des shells installée avec succès."
 
