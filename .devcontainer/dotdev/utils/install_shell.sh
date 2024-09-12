@@ -73,13 +73,10 @@ sudo chmod +x ${UTILS_DIR}/interactive_shell.sh
 #fix permsission executable
 sudo chmod +x "$UTILS_DIR/welcome.sh"
 
-#Fix des poermissions
+#Fix des permissions
 sudo chown -R root:root $WORKSPACE_DIR
 
-
-
 source ${CUSTOM_DIR}/install.sh
-
 
 # Ajouter le makefile au .gitignore s'il n'y est pas déjà
 GITIGNORE_FILE="${WORKSPACE_DIR}/.gitignore"
@@ -91,9 +88,13 @@ if [ -f "$GITIGNORE_FILE" ]; then
     fi
 fi
 
-# Copie du makefile
-cp $CONFIG_DIR/Makefile $WORKSPACE_DIR/Makefile
-sed -i "s/##APP_NAME##/\"${APP_NAME}\"/g" $WORKSPACE_DIR/Makefile
+# Check if Makefile exists before copying
+if [ ! -f "$WORKSPACE_DIR/Makefile" ]; then
+    cp "$CONFIG_DIR/Makefile" "$WORKSPACE_DIR/Makefile"
+    sed -i "s/##APP_NAME##/\"${APP_NAME}\"/g" "$WORKSPACE_DIR/Makefile"
+else
+    echo "Makefile already exists in the destination, skipping copy."
+fi
 
 
 echo "Configuration des shells installée avec succès."
