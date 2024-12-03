@@ -134,6 +134,13 @@ Dotdev vous permet de mettre à jour le conteneur de développement, de changer 
 This mode will use the local repository instead of the remote one.
 
 
+## Comment start mon devcontainer
+Se mettre dans le repertoire et lancer cette commande
+```
+devcontainer up --workspace-folder .
+```
+
+
 ## Comment exposer le port de votre application en public sur Codespaces
 
 ## Exposer son application
