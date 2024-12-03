@@ -92,6 +92,34 @@ Suivez les instructions pour ouvrir les ports nécessaires et saisissez le mot d
 
 Pour installer le DevContainer localement, procédez comme suit :
 
+### Installer DevContainer CLI
+Pour gérer des DevContainers via la ligne de commande de manière globale :
+
+Assurez-vous que npm (Node.js) ou Python (pour pip) est installé.
+Avec npm :
+Installez le package @devcontainers/cli :
+``` 
+npm install -g @devcontainers/cli
+```
+
+Avec pip (si disponible) :
+Installez le CLI pour gérer les DevContainers :
+```
+pip install devcontainer
+```
+
+### Configurer un DevContainer
+Dans un projet :
+
+Créez un dossier .devcontainer à la racine.
+Ajoutez un fichier devcontainer.json ou Dockerfile pour décrire votre configuration.
+Démarrez le DevContainer :
+Si vous utilisez VS Code, ouvrez le projet, et exécutez Dev Containers: Reopen in Container dans la palette de commandes (Cmd+Shift+P).
+Sinon, utilisez la CLI :
+```
+devcontainer up
+````
+
 1. Assurez-vous d'avoir Docker installé sur votre machine.
 2. Clonez le projet dans le répertoire souhaité avec `git clone`.
 3. Accédez au répertoire du projet et téléchargez Dotinstall avec `curl` ou `wget`.
@@ -100,6 +128,9 @@ Pour installer le DevContainer localement, procédez comme suit :
 6. Sortez du répertoire avec `cd ..`.
 7. Lancez le DevContainer avec `devcontainer up --workspace-folder Test-World-Frontend`.
 8. Utilisez Visual Studio Code pour accéder au projet dans le DevContainer.
+
+
+
 
 ## Présentation de Dotdev
 
