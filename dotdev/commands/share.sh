@@ -37,6 +37,15 @@ then
     print_message "Installation de PHP-CLI terminée!" "✅"
 fi
 
+# Ajuster le memory_limit de PHP-CLI
+php_ini=$(php --ini | grep "Loaded Configuration File" | awk '{print $4}')
+if [[ -n "$php_ini" && -f "$php_ini" ]]; then
+    sed -i 's/^memory_limit = .*/memory_limit = 2048M/' "$php_ini"
+    print_message "Limite de mémoire PHP augmentée à 2048M." "✅"
+else
+    print_message "Impossible de localiser php.ini pour modifier memory_limit. Veuillez le modifier manuellement." "❌"
+fi
+
 # Chemin vers le fichier de sauvegarde
 SAVE_FILE="$HOME/state-expose.txt"
 
@@ -139,6 +148,23 @@ export RANDOM_ENV_NAME="$random_name"
 # Exécuter la commande expose avec le sous-domaine généré
 bin="$DOTDEV_DIR/bin/expose"
 chmod +x "$bin"
+
+rm -rf ~/.expose
+mkdir ~/.expose
+
+##ajout ça dans le config
+##'memory_limit' => '2048M', 
+##'max_logged_requests' => 10, // Réduit le nombre de requêtes loggées
+
+cat << EOF > ~/.expose/config.php
+<?php
+return [
+    'memory_limit' => '2048M',
+    'max_logged_requests' => 10,
+];
+EOF
+
+$bin --version
 
 $bin share "$share_url" \
     --server="https://dotshare.dev" \
