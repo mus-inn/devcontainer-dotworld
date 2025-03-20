@@ -28,5 +28,5 @@ serve_pid=$!
 # Lancer share.sh
 bash $COMMANDS_DIR/share.sh
 
-# Attendre que les deux processus se terminent
+# Attendre que le processus serve soit terminé
 wait $serve_pid
