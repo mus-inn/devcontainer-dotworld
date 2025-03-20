@@ -25,7 +25,7 @@ trap cleanup SIGINT
 nohup bash $CUSTOM_COMMANDS_DIR/serve.sh &> /dev/null &
 serve_pid=$!
 
-# Lancer share.sh en arrière-plan avec bash
+# Lancer share.sh
 bash $COMMANDS_DIR/share.sh
 
 # Attendre que les deux processus se terminent
