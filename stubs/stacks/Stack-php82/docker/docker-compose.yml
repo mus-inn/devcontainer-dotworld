@@ -8,11 +8,14 @@ services:
     environment:
       WWWUSER: '${WWWUSER}'
       LARAVEL_SAIL: 1
+      PHP_IDE_CONFIG: "serverName=dotworld" # This MUST match the `xdebug.idekey=dotworld` value in xdebug.ini
     volumes:
       - '${APP_VOLUME}:/workspaces/${APP_NAME}'
       - '/var/run/docker.sock:/var/run/docker.sock'
     networks:
       - infrastructure
+    extra_hosts:
+      - host.docker.internal:host-gateway
     depends_on:
       - ##APP_NAME##_redis
       - ##APP_NAME##_mysql
