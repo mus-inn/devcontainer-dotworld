@@ -1,9 +1,7 @@
+FROM --platform=$BUILDPLATFORM chdotworld/dotworld:node22-ubuntu
+
 ARG TARGETOS
 ARG TARGETARCH
-
-FROM --platform=$BUILDPLATFORM chdotworld/dotworld:base-ubuntu
-
-ARG TARGETARCH=arm64
 
 RUN echo "Building for architecture: $TARGETARCH"
 
