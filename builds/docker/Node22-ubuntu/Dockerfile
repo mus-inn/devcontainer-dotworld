@@ -43,7 +43,7 @@ RUN mkdir -p $NVM_DIR && \
     ln -s $NVM_DIR/versions/node/v*/bin/node /usr/local/bin/node && \
     ln -s $NVM_DIR/versions/node/v*/bin/npm /usr/local/bin/npm && \
     corepack enable && \
-    corepack prepare yarn@stable --activate && \
+    corepack prepare yarn@1.22 --activate && \
     yarn --version && \
     ln -s $NVM_DIR/versions/node/v*/bin/yarn /usr/local/bin/yarn
 
