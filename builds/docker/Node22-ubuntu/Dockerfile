@@ -41,13 +41,17 @@ RUN mkdir -p $NVM_DIR && \
     nvm use $NODE_VERSION && \
     nvm alias default $NODE_VERSION && \
     ln -s $NVM_DIR/versions/node/v*/bin/node /usr/local/bin/node && \
-    ln -s $NVM_DIR/versions/node/v*/bin/npm /usr/local/bin/npm
+    ln -s $NVM_DIR/versions/node/v*/bin/npm /usr/local/bin/npm && \
+    corepack enable && \
+    corepack prepare yarn@stable --activate && \
+    yarn --version && \
+    ln -s $NVM_DIR/versions/node/v*/bin/yarn /usr/local/bin/yarn
 
     # Nettoyer les caches de paquets
 RUN apt-get remove -y gcc g++ make cmake pkg-config && \
     apt-get autoremove -y && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists/* /root/.npm /root/.nvm
+    rm -rf /var/lib/apt/lists/* /root/.npm /root/.nvm /root/.yarn
 
 # Copier le script de démarrage et définir les permissions
 COPY start-container /usr/local/bin/start-container
