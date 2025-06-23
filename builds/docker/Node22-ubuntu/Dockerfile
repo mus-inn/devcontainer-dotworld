@@ -42,7 +42,12 @@ RUN mkdir -p $NVM_DIR && \
     nvm alias default $NODE_VERSION && \
     ln -s $NVM_DIR/versions/node/v*/bin/node /usr/local/bin/node && \
     ln -s $NVM_DIR/versions/node/v*/bin/npm /usr/local/bin/npm && \
-    npm install -g yarn
+    corepack enable && \
+    corepack prepare yarn@stable --activate && \
+    yarn --version && \
+    ln -s $NVM_DIR/versions/node/v*/bin/yarn /usr/local/bin/yarn && \
+    rm -rf /var/lib/apt/lists/* /root/.npm /root/.nvm /root/.yarn
+
 
     # Nettoyer les caches de paquets
 RUN apt-get remove -y gcc g++ make cmake pkg-config && \
