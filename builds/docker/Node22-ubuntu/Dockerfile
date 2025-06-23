@@ -41,7 +41,8 @@ RUN mkdir -p $NVM_DIR && \
     nvm use $NODE_VERSION && \
     nvm alias default $NODE_VERSION && \
     ln -s $NVM_DIR/versions/node/v*/bin/node /usr/local/bin/node && \
-    ln -s $NVM_DIR/versions/node/v*/bin/npm /usr/local/bin/npm
+    ln -s $NVM_DIR/versions/node/v*/bin/npm /usr/local/bin/npm && \
+    npm install -g yarn
 
     # Nettoyer les caches de paquets
 RUN apt-get remove -y gcc g++ make cmake pkg-config && \
