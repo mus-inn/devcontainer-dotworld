@@ -47,7 +47,6 @@ RUN curl -sS 'https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x14aa40ec08
     && apt-get -y autoremove \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
-   #install composer 
     && curl -sLS https://getcomposer.org/installer | php -- --install-dir=/usr/bin/ --filename=composer \
     && setcap "cap_net_bind_service=+ep" /usr/bin/php8.4
 
@@ -55,5 +54,7 @@ COPY start-container /usr/local/bin/start-container
 COPY php.ini /etc/php/8.4/cli/conf.d/99-vscode.ini
 
 RUN chmod +x /usr/local/bin/start-container
+
+RUN npm install -g czg && npm install mjml
 
 ENTRYPOINT ["start-container"]
