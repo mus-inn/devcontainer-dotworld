@@ -1,0 +1,46 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/alpine
+{
+	"name": "##APP_NAME##",
+	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+	"dockerComposeFile": "docker/docker-compose.yml",
+	"service": "##APP_NAME##",
+	"runServices": [
+		"##APP_NAME##_mysql",
+		"##APP_NAME##_redis"
+	],
+	"workspaceFolder": "/workspaces/##APP_NAME##",
+	// Features to add to the dev container. More info: https://containers.dev/features.
+	"features": {},
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	"forwardPorts": [
+		80,
+		1025,
+		6001,
+		3306,
+		6379,
+		8025
+	],
+	"settings": {
+		"terminal.integrated.shell.linux": "/bin/zsh"
+	},
+	// Use 'postCreateCommand' to run commands after the container is created.[
+	"postCreateCommand": "sudo bash /workspaces/##APP_NAME##/.devcontainer/dotdev/utils/install_shell.sh",
+	"postAttachCommand": "",
+	//"postAttachCommand" : "cp .env.docker .env && composer install && php artisan migrate --seed && php artisan migrate --env=testing && php artisan shield:super-admin --user=1 && npm install && npm run dev",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"GitHub.copilot",
+				"onecentlin.laravel-extension-pack",
+				"vivaxy.vscode-conventional-commits",
+				"mhutchie.git-graph",
+				"ms-vscode-remote.remote-containers",
+				"GitHub.codespaces",
+				"GitHub.vscode-github-actions"
+			]
+		}
+	}
+}
+
+

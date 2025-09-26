@@ -1,0 +1,8 @@
+#!/bin/sh
+
+chmod 666 /var/run/docker.sock || true
+
+while true; do
+    sleep 1
+done
+
