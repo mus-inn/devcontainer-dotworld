@@ -24,7 +24,6 @@ RUN apt-get update \
         imagick \
         mbstring \
         sqlite3 \
-        oniguruma oniguruma-dev \
     && rm -rf /var/lib/apt/lists/*
 
 RUN curl -sLS https://getcomposer.org/installer | php -- --install-dir=/usr/bin/ --filename=composer
