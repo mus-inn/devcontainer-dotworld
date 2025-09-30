@@ -47,11 +47,23 @@ COPY --from=frankenphp /usr/local/ /usr/local/
 COPY --from=frankenphp /usr/bin/composer /usr/bin/composer
 
 # Ensure expected folders and minimal tools, grant net bind capability
+# Install required shared libraries for PHP extensions copied from FrankenPHP
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         libcap2-bin \
         sqlite3 \
         librsvg2-bin \
+        libonig5 \
+        libzip4 \
+        libpng16-16 \
+        libjpeg62-turbo \
+        libwebp7 \
+        libfreetype6 \
+        libicu72 \
+        libldap-2.5-0 \
+        libmagickwand-6.q16-6 \
+        libmemcached11 \
+        libc-client2007e \
     && rm -rf /var/lib/apt/lists/* \
     && mkdir -p /config/caddy /data/caddy \
     && mkdir -p /var/www && ln -s /app/public /var/www/html || true \
