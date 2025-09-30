@@ -17,6 +17,7 @@ RUN apk add --no-cache \
         oniguruma-dev \
         librsvg \
         sqlite \
+        oniguruma oniguruma-dev \
     && install-php-extensions \
         pdo_mysql \
         gd \
