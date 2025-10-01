@@ -82,17 +82,17 @@ COPY --from=frankenphp /usr/bin/composer /usr/bin/composer
 
 # Copy critical Debian libraries from FrankenPHP image for PHP extensions compatibility
 # These specific library versions are required by gd, intl, swoole, and other extensions
-COPY --from=frankenphp /usr/lib/x86_64-linux-gnu/libgomp.so.1 /usr/lib/x86_64-linux-gnu/
-COPY --from=frankenphp /usr/lib/x86_64-linux-gnu/libc-client.so.2007e /usr/lib/x86_64-linux-gnu/
-COPY --from=frankenphp /usr/lib/x86_64-linux-gnu/libicuio.so.72 /usr/lib/x86_64-linux-gnu/
-COPY --from=frankenphp /usr/lib/x86_64-linux-gnu/libicui18n.so.72 /usr/lib/x86_64-linux-gnu/
-COPY --from=frankenphp /usr/lib/x86_64-linux-gnu/libicuuc.so.72 /usr/lib/x86_64-linux-gnu/
-COPY --from=frankenphp /usr/lib/x86_64-linux-gnu/libicudata.so.72 /usr/lib/x86_64-linux-gnu/
-COPY --from=frankenphp /usr/lib/x86_64-linux-gnu/libsodium.so.23 /usr/lib/x86_64-linux-gnu/
-COPY --from=frankenphp /usr/lib/x86_64-linux-gnu/libpq.so.5 /usr/lib/x86_64-linux-gnu/
-COPY --from=frankenphp /usr/lib/x86_64-linux-gnu/libmemcached.so.11 /usr/lib/x86_64-linux-gnu/
-COPY --from=frankenphp /usr/lib/x86_64-linux-gnu/libzip.so.4 /usr/lib/x86_64-linux-gnu/
-COPY --from=frankenphp /usr/lib/x86_64-linux-gnu/libavif.so.* /usr/lib/x86_64-linux-gnu/
+# Note: Using wildcards to support both x86_64 and aarch64 architectures
+COPY --from=frankenphp /usr/lib/*/libgomp.so.1 /usr/local/lib/
+COPY --from=frankenphp /usr/lib/*/libc-client.so.2007e /usr/local/lib/
+COPY --from=frankenphp /usr/lib/*/libicuio.so.72 /usr/local/lib/
+COPY --from=frankenphp /usr/lib/*/libicui18n.so.72 /usr/local/lib/
+COPY --from=frankenphp /usr/lib/*/libicuuc.so.72 /usr/local/lib/
+COPY --from=frankenphp /usr/lib/*/libicudata.so.72 /usr/local/lib/
+COPY --from=frankenphp /usr/lib/*/libsodium.so.23 /usr/local/lib/
+COPY --from=frankenphp /usr/lib/*/libpq.so.5 /usr/local/lib/
+COPY --from=frankenphp /usr/lib/*/libmemcached.so.11 /usr/local/lib/
+COPY --from=frankenphp /usr/lib/*/libzip.so.4 /usr/local/lib/
 
 # Set proper permissions for FrankenPHP to bind to privileged ports and update library cache
 RUN setcap "cap_net_bind_service=+ep" /usr/local/bin/frankenphp \
