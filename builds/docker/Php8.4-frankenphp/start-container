@@ -1,17 +1,22 @@
 #!/usr/bin/env bash
 
-set -euo pipefail
-
 if [ ! -d /.composer ]; then
     mkdir /.composer
 fi
 
-chmod -R ugo+rw /.composer || true
+chmod -R ugo+rw /.composer
 
-# Allow binding to privileged ports when run as non-root (if capability is set)
-setcap -v cap_net_bind_service+ep /usr/local/bin/frankenphp || true
+chmod 666 /var/run/docker.sock 2>/dev/null || true
 
-# Default SERVER_NAME: hostname and bind on :80 and :443 (HTTP/3 enabled by image)
-: "${SERVER_NAME:=localhost, :80, :443}"
+# Create Caddy config and data directories if they don't exist
+mkdir -p /config/caddy /data/caddy 2>/dev/null || true
 
-exec frankenphp run
+# Set default SERVER_NAME for FrankenPHP if not provided
+export SERVER_NAME="${SERVER_NAME:-localhost, :80, :443}"
+
+# Keep container running for devcontainer usage
+# Laravel Octane with FrankenPHP can be started manually with:
+# php artisan octane:start --server=frankenphp
+while true; do
+    sleep 1
+done

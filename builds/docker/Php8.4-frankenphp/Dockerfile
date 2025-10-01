@@ -1,80 +1,74 @@
 ARG TARGETOS
 ARG TARGETARCH
 
-# Builder stage: prepare FrankenPHP, PHP runtime and extensions
+# Builder stage: FrankenPHP with PHP 8.4 and extensions
 FROM --platform=$BUILDPLATFORM dunglas/frankenphp:php8.4-bookworm AS frankenphp
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update \
-    && install-php-extensions \
-        pdo_mysql \
-        gd \
-        intl \
-        zip \
-        opcache \
-        imap \
-        ldap \
-        pcov \
-        redis \
-        swoole \
-        memcached \
-        igbinary \
-        msgpack \
-        imagick \
-        mbstring \
-        sqlite3 \
-    && rm -rf /var/lib/apt/lists/*
+# Install PHP extensions required for Laravel Octane
+RUN install-php-extensions \
+    pdo_mysql \
+    pdo_sqlite \
+    gd \
+    intl \
+    zip \
+    opcache \
+    imap \
+    ldap \
+    pcov \
+    redis \
+    swoole \
+    memcached \
+    igbinary \
+    msgpack \
+    imagick \
+    mbstring \
+    sqlite3 \
+    curl \
+    xml \
+    bcmath \
+    soap \
+    readline
 
+# Install Composer
 RUN curl -sLS https://getcomposer.org/installer | php -- --install-dir=/usr/bin/ --filename=composer
 
-WORKDIR /app/public
-RUN mkdir -p /var/www && ln -s /app/public /var/www/html
-
-# Final stage: your Node 22 Ubuntu base image with FrankenPHP runtime
+# Final stage: Node 22 Ubuntu base image with FrankenPHP runtime
 FROM --platform=$BUILDPLATFORM chdotworld/dotworld:node22-ubuntu
 
 LABEL maintainer="Thibaud WILLM <thibaud.willm@dotworld.ch>"
 
 ARG WWWGROUP=1000
 
-WORKDIR /app/public
+WORKDIR /var/www/html
 
 ENV DEBIAN_FRONTEND noninteractive
 
-# Copy FrankenPHP runtime, PHP, composer and extensions from builder
+# Install minimal runtime dependencies
+# FrankenPHP and PHP from the builder already include most dependencies
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        sqlite3 \
+        libcap2-bin \
+        librsvg2-bin \
+        mysql-client \
+        ca-certificates \
+    && apt-get -y autoremove \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Copy FrankenPHP runtime, PHP, Composer and all extensions from builder
+COPY --from=frankenphp /usr/local/bin/frankenphp /usr/local/bin/frankenphp
 COPY --from=frankenphp /usr/local/ /usr/local/
 COPY --from=frankenphp /usr/bin/composer /usr/bin/composer
 
-# Install essential system libraries required by FrankenPHP and PHP extensions
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-        libcap2-bin \
-        sqlite3 \
-        librsvg2-bin \
-        libonig5 \
-    && (apt-get install -y --no-install-recommends \
-        libzip4 \
-        libpng16-16 \
-        libjpeg-turbo8 \
-        libwebp7 \
-        libfreetype6 \
-        libicu70 \
-        libldap-2.5-0 \
-        libmagickwand-6.q16-6 \
-        libmagickcore-6.q16-6 \
-        libmemcached11 \
-        libc-client2007e \
-        libsasl2-2 \
-        libgssapi-krb5-2 \
-    || echo "Some optional packages could not be installed, continuing...") \
-    && ldconfig \
-    && echo "Verifying critical libraries are available:" \
-    && ldconfig -p | grep -E "libonig|libzip|libcap" || echo "Some libraries missing but continuing..." \
-    && rm -rf /var/lib/apt/lists/* \
-    && mkdir -p /config/caddy /data/caddy \
-    && mkdir -p /var/www && ln -s /app/public /var/www/html || true \
-    && setcap "cap_net_bind_service=+ep" /usr/local/bin/frankenphp || true
+# Set proper permissions for FrankenPHP to bind to privileged ports
+RUN setcap "cap_net_bind_service=+ep" /usr/local/bin/frankenphp
+
+# Create necessary directories
+RUN mkdir -p /config/caddy /data/caddy /.composer \
+    && chmod -R ugo+rw /.composer
 
 COPY start-container /usr/local/bin/start-container
 COPY php.ini /usr/local/etc/php/conf.d/99-vscode.ini
