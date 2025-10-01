@@ -59,7 +59,6 @@ RUN apt-get update \
         libpng16-16 \
         libjpeg-turbo8 \
         libwebp7 \
-        libavif15 \
         libfreetype6 \
         libgomp1 \
         libmagickwand-6.q16-6 \
