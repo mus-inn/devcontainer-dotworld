@@ -72,6 +72,8 @@ RUN apt-get update \
         libssl3 \
         libxml2 \
         libxslt1.1 \
+        libxpm4 \
+        libx11-6 \
     && apt-get -y autoremove \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
@@ -109,6 +111,7 @@ COPY --from=frankenphp /usr/lib/*/libzip.so.4 /usr/local/lib/
 # Image processing (GD)
 COPY --from=frankenphp /usr/lib/*/libavif.so.15 /usr/local/lib/
 COPY --from=frankenphp /usr/lib/*/libjpeg.so.62 /usr/local/lib/
+COPY --from=frankenphp /usr/lib/*/libXpm.so.4 /usr/local/lib/
 
 # Memcached dependencies
 COPY --from=frankenphp /usr/lib/*/libmemcached.so.11 /usr/local/lib/
