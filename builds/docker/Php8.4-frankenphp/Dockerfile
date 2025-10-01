@@ -80,8 +80,23 @@ COPY --from=frankenphp /usr/local/bin/frankenphp /usr/local/bin/frankenphp
 COPY --from=frankenphp /usr/local/ /usr/local/
 COPY --from=frankenphp /usr/bin/composer /usr/bin/composer
 
-# Set proper permissions for FrankenPHP to bind to privileged ports
-RUN setcap "cap_net_bind_service=+ep" /usr/local/bin/frankenphp
+# Copy critical Debian libraries from FrankenPHP image for PHP extensions compatibility
+# These specific library versions are required by gd, intl, swoole, and other extensions
+COPY --from=frankenphp /usr/lib/x86_64-linux-gnu/libgomp.so.1 /usr/lib/x86_64-linux-gnu/
+COPY --from=frankenphp /usr/lib/x86_64-linux-gnu/libc-client.so.2007e /usr/lib/x86_64-linux-gnu/
+COPY --from=frankenphp /usr/lib/x86_64-linux-gnu/libicuio.so.72 /usr/lib/x86_64-linux-gnu/
+COPY --from=frankenphp /usr/lib/x86_64-linux-gnu/libicui18n.so.72 /usr/lib/x86_64-linux-gnu/
+COPY --from=frankenphp /usr/lib/x86_64-linux-gnu/libicuuc.so.72 /usr/lib/x86_64-linux-gnu/
+COPY --from=frankenphp /usr/lib/x86_64-linux-gnu/libicudata.so.72 /usr/lib/x86_64-linux-gnu/
+COPY --from=frankenphp /usr/lib/x86_64-linux-gnu/libsodium.so.23 /usr/lib/x86_64-linux-gnu/
+COPY --from=frankenphp /usr/lib/x86_64-linux-gnu/libpq.so.5 /usr/lib/x86_64-linux-gnu/
+COPY --from=frankenphp /usr/lib/x86_64-linux-gnu/libmemcached.so.11 /usr/lib/x86_64-linux-gnu/
+COPY --from=frankenphp /usr/lib/x86_64-linux-gnu/libzip.so.4 /usr/lib/x86_64-linux-gnu/
+COPY --from=frankenphp /usr/lib/x86_64-linux-gnu/libavif.so.* /usr/lib/x86_64-linux-gnu/
+
+# Set proper permissions for FrankenPHP to bind to privileged ports and update library cache
+RUN setcap "cap_net_bind_service=+ep" /usr/local/bin/frankenphp \
+    && ldconfig
 
 # Create necessary directories
 RUN mkdir -p /config/caddy /data/caddy /.composer \
