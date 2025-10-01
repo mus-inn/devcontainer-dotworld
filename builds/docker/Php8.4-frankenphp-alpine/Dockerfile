@@ -35,7 +35,8 @@ RUN apk add --no-cache \
         msgpack \
         imagick \
         mbstring \
-        sqlite3
+        sqlite3 \
+        pcntl
 
 RUN curl -sLS https://getcomposer.org/installer | php -- --install-dir=/usr/bin/ --filename=composer
 

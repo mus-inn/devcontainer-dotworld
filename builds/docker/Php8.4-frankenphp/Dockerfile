@@ -29,7 +29,8 @@ RUN install-php-extensions \
     xml \
     bcmath \
     soap \
-    readline
+    readline \
+    pcntl
 
 # Install Composer
 RUN curl -sLS https://getcomposer.org/installer | php -- --install-dir=/usr/bin/ --filename=composer
@@ -107,6 +108,7 @@ COPY --from=frankenphp /usr/lib/*/libzip.so.4 /usr/local/lib/
 
 # Image processing (GD)
 COPY --from=frankenphp /usr/lib/*/libavif.so.15 /usr/local/lib/
+COPY --from=frankenphp /usr/lib/*/libjpeg.so.62 /usr/local/lib/
 
 # Memcached dependencies
 COPY --from=frankenphp /usr/lib/*/libmemcached.so.11 /usr/local/lib/
