@@ -81,18 +81,39 @@ COPY --from=frankenphp /usr/local/ /usr/local/
 COPY --from=frankenphp /usr/bin/composer /usr/bin/composer
 
 # Copy critical Debian libraries from FrankenPHP image for PHP extensions compatibility
-# These specific library versions are required by gd, intl, swoole, and other extensions
+# These specific library versions are required by gd, intl, swoole, memcached and other extensions
 # Note: Using wildcards to support both x86_64 and aarch64 architectures
+
+# Core libraries
 COPY --from=frankenphp /usr/lib/*/libgomp.so.1 /usr/local/lib/
-COPY --from=frankenphp /usr/lib/*/libc-client.so.2007e /usr/local/lib/
+COPY --from=frankenphp /usr/lib/*/libgdbm.so.6 /usr/local/lib/
+COPY --from=frankenphp /usr/lib/*/libgdbm_compat.so.4 /usr/local/lib/
+
+# ICU libraries (for intl extension)
 COPY --from=frankenphp /usr/lib/*/libicuio.so.72 /usr/local/lib/
 COPY --from=frankenphp /usr/lib/*/libicui18n.so.72 /usr/local/lib/
 COPY --from=frankenphp /usr/lib/*/libicuuc.so.72 /usr/local/lib/
 COPY --from=frankenphp /usr/lib/*/libicudata.so.72 /usr/local/lib/
+
+# Cryptography and security
 COPY --from=frankenphp /usr/lib/*/libsodium.so.23 /usr/local/lib/
+
+# Database clients
 COPY --from=frankenphp /usr/lib/*/libpq.so.5 /usr/local/lib/
-COPY --from=frankenphp /usr/lib/*/libmemcached.so.11 /usr/local/lib/
+COPY --from=frankenphp /usr/lib/*/libc-client.so.2007e /usr/local/lib/
+
+# Compression and archives
 COPY --from=frankenphp /usr/lib/*/libzip.so.4 /usr/local/lib/
+
+# Image processing (GD)
+COPY --from=frankenphp /usr/lib/*/libavif.so.15 /usr/local/lib/
+
+# Memcached dependencies
+COPY --from=frankenphp /usr/lib/*/libmemcached.so.11 /usr/local/lib/
+COPY --from=frankenphp /usr/lib/*/libhashkit.so.2 /usr/local/lib/
+
+# Swoole dependencies (async networking)
+COPY --from=frankenphp /usr/lib/*/libcares.so.2 /usr/local/lib/
 
 # Set proper permissions for FrankenPHP to bind to privileged ports and update library cache
 RUN setcap "cap_net_bind_service=+ep" /usr/local/bin/frankenphp \

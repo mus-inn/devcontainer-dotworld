@@ -75,6 +75,16 @@ composer require laravel/octane
 php artisan octane:install --server=frankenphp
 ```
 
+### Vérification des extensions PHP
+
+Toutes les extensions sont pré-installées et configurées. Pour vérifier :
+
+```bash
+php -m | grep -E "(gd|intl|swoole|redis|memcached)"
+```
+
+Si vous voyez des warnings au démarrage sur `libavif`, `libcares` ou `libhashkit`, c'est que l'image doit être rebuildée avec les dernières modifications
+
 ### Configuration recommandée
 
 Dans votre fichier `config/octane.php` :
