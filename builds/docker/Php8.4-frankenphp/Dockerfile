@@ -45,8 +45,8 @@ WORKDIR /var/www/html
 
 ENV DEBIAN_FRONTEND noninteractive
 
-# Install minimal runtime dependencies
-# FrankenPHP and PHP from the builder already include most dependencies
+# Install runtime dependencies for PHP extensions
+# These libraries are needed for the extensions copied from the Debian-based FrankenPHP image
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         sqlite3 \
@@ -55,7 +55,23 @@ RUN apt-get update \
         mysql-client \
         ca-certificates \
         libonig5 \
-        libonig-dev \
+        libzip4 \
+        libpng16-16 \
+        libjpeg-turbo8 \
+        libwebp7 \
+        libavif15 \
+        libfreetype6 \
+        libgomp1 \
+        libmagickwand-6.q16-6 \
+        libmagickcore-6.q16-6 \
+        libc-client2007e \
+        libicu70 \
+        libsodium23 \
+        libpq5 \
+        libmemcached11 \
+        libssl3 \
+        libxml2 \
+        libxslt1.1 \
     && apt-get -y autoremove \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
