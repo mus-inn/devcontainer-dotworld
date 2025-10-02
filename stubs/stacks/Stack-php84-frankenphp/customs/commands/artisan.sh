@@ -3,7 +3,7 @@
 # Titre et description du script
 cmd="artisan"
 description="lancer l'artisan du projet Laravel courant"
-author="Thibaud WILLM <thibaud.willm@dotworld.ch"
+author="Thibaud WILLM <thibaud.willm@dotworld.ch>"
 
 source $UTILS_DIR/functions.sh
 
