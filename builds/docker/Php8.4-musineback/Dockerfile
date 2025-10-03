@@ -20,6 +20,7 @@ RUN curl -sS 'https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x14aa40ec08
         sqlite3 \
         libcap2-bin \
         libpng-dev \
+        libdav1d6 \
         python2 \
         librsvg2-bin \
         php8.4-cli \
