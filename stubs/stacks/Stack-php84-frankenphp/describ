@@ -1,0 +1,4 @@
+PHP 8.4 with FrankenPHP runtime for Laravel Octane, Node 22 base, MySQL 8 and Redis.
+FrankenPHP provides ultra-fast performance with worker mode and HTTP/2/3 support.
+Includes devcontainer, Docker Compose, and default ports: HTTP:80/443, WS:6001, DB:3306, Redis:6379.
+Use 'php artisan octane:start --server=frankenphp' to launch your Laravel application.
