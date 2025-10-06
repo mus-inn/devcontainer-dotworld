@@ -36,8 +36,15 @@ run_with_script() {
     local command="$1"
     local input="$2"
 
-    # Utiliser `script` pour exécuter la commande dans un environnement TTY
-    script -q -c "$command" /dev/null <<< "$input"
+    if script -qc "true" "$input" >/dev/null 2>&1; then
+        # util-linux (Linux)
+        output=$(script -q -c "${command[@]}" "$input")
+    else
+        # BSD (macOS)
+        output=$(script -q "$input" "${command[@]}")
+
+        return $output
+    fi
 }
 
 
@@ -45,6 +52,8 @@ run_with_script() {
 is_docker_logged_in() {
     # Vérification de la connexion initiale
     output=$(run_with_script "docker login" "")
+
+    echo -e "${YELLOW}Output: $output${NC}"
 
     # Vérifier l'état de connexion en analysant la sortie
     if [[ "$output" == *"Login Succeeded"* ]]; then

@@ -21,7 +21,6 @@ RUN apk add --no-cache \
         oniguruma-dev \
     && install-php-extensions \
         pdo_mysql \
-        gd \
         intl \
         zip \
         opcache \

@@ -10,7 +10,6 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN install-php-extensions \
     pdo_mysql \
     pdo_sqlite \
-    gd \
     intl \
     zip \
     opcache \

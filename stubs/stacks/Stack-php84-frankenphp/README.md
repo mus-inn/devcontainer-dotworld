@@ -25,7 +25,8 @@ FrankenPHP est un serveur d'application PHP moderne écrit en Go qui offre :
 
 Toutes les extensions requises pour Laravel sont pré-installées :
 - pdo_mysql, pdo_sqlite
-- gd, imagick
+- gd, imagick (nous avons temporairement supprimé l'extension dû à des problèmes avec le chargement d'une des  
+ libraires systèmes pour les images)
 - intl, mbstring
 - zip, xml
 - opcache (activé en CLI)
