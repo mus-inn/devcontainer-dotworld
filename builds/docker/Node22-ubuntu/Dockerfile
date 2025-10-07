@@ -45,7 +45,8 @@ RUN mkdir -p $NVM_DIR && \
     corepack enable && \
     corepack prepare yarn@1.22 --activate && \
     yarn --version && \
-    ln -s $NVM_DIR/versions/node/v*/bin/yarn /usr/local/bin/yarn
+    ln -s $NVM_DIR/versions/node/v*/bin/yarn /usr/local/bin/yarn && \
+    ln -s $NVM_DIR/versions/node/v*/bin/npx /usr/local/bin/npx
 
     # Nettoyer les caches de paquets
 RUN apt-get remove -y gcc g++ make cmake pkg-config && \
